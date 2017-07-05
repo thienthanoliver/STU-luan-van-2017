@@ -1,0 +1,57 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker({
+        dateFormat: "yy-mm-dd"
+    });
+  } );
+
+</script>
+    <div class="container">
+        <div class="row">
+            <h2>thông tin tài khoản</h2>
+        </div><hr>
+    <form action="" method="POST">
+        <div class="row" >
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <% if(success_msg){ %>
+                        <h3 style="color: red"><%=success_msg%></h3>
+                <% } %>
+                <strong>Họ Tên :</strong>
+                <input type="text" name="hoten" value="<%=data[0].HoTen%>" class="form-control">
+                <strong>Email :</strong> 
+                <input value="<%=data[0].Email%>" class="form-control" disabled>
+                <strong>Phone :</strong>
+                <input type="text" name="phone" value="<%=data[0].Phone%>" class="form-control">
+                <strong>Địa chỉ :</strong> 
+                <input type="text" name="diachi" value="<%=data[0].DiaChi%>" class="form-control">
+                <strong>Ngày Sinh :</strong>
+                <input type="text" name="ngaysinh" id="datepicker" value="<%=data[0].NgaySinh.getFullYear()+'-'+(data[0].NgaySinh.getMonth()+1)+'-'+data[0].NgaySinh.getDate()%>" class="form-control">
+                <strong>Giới Tính : </strong>
+                <select name="gioitinh" class="form-control">
+                    <option value="1" <%if(data[0].GioiTinh == 1){%>selected<%}%> > Nam </option>
+                    <option value="0" <%if(data[0].GioiTinh == 0){%>selected<%}%>> Nữ </option>
+                </select>
+            </div>
+        </div>
+        <br>
+                <input type="hidden" name="id" value="<%=data[0].idUser%>">
+        <div class="row" align="center">
+            <a href="/tai-khoan" title=""><button type="button" class="btn btn-success"> Quay Lại </button></a> <button class="btn btn-success" type="submit"> Cập Nhật </button>
+        </div>
+    </form>
+    </div>
+</section>
+
+
+<% include ../block/footer %>
+<script>
+    date = new Date("<%=data[0].NgaySinh%>")
+    console.log(date.toLocaleDateString())
+</script>

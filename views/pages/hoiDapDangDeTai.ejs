@@ -1,0 +1,47 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/javascripts/ckeditor/ckeditor.js"></script>
+    <script src="/javascripts/ckeditor/samples/js/sample.js"></script>
+    <link rel="stylesheet" href="/javascripts/ckeditor/samples/css/samples.css">
+    <link rel="stylesheet" href="/javascripts/ckeditor/samples/toolbarconfigurator/lib/codemirror/neo.css">
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+    <div class="container">
+        <% if(success_msg){ %>
+            <h3 style="color: red"><%=success_msg%></h3>
+        <% } %>
+      <form action="" method="POST" >  
+        <div class="row">
+        <h3> + Gửi đề tài mới </h3>
+        <div>
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                  <input type="text" name="chude" placeholder="Nhập chủ đề" class="form-control" style="width: 40%; float: left;" required>
+                  <select  class="form-control" style="width: 40%; margin-left: 45%" name="loai" required>
+                      <option value> -- Chọn loại chủ đề -- </option>
+                      <%loai.forEach(function(val,key){%>
+                        <option value="<%=val.idLoaiKH%>"> <%=val.TenLoaiKhoaHoc%> </option>
+                      <%})%>
+                  </select>
+              </div> <hr>
+              <strong>Để up ảnh các bạn vào <a href="http://upanh.vforum.vn/" target="blank"> upanh.vforum.vn</a>, sau đó copy kết quả tab BBCODE dán vào bài viết hình ảnh sẽ được hiển thị</strong>
+              <div class="panel-body" id="editor" name="editor"></div>
+            </div>
+        </div>
+        <div>
+          <input type="hidden" name="noidung" id="noidung">
+          <button type="button" onclick="editorr()" class="btn btn-info" style="float: right;" >Đăng đề tài</button>
+        </div>
+        </div>
+      </form>
+    </div>
+</section>
+<script>
+    initSample();
+    function editorr(){
+      var data = CKEDITOR.instances.editor.getData();
+      $('#noidung').val(data)
+      $('form').submit()
+  }
+</script>
+<% include ../block/footer %>

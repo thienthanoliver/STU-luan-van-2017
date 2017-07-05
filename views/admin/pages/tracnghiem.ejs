@@ -1,0 +1,165 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    	<section id="main-content">
+    		<section class="wrapper">
+                  <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          <h3>CÁC BỘ TRẮC NGHIỆM CỦA BẠN</h3>
+                          
+                          <table class="table table-striped table-advance table-hover">
+                           <tbody>
+                           <form action="" method="get" accept-charset="utf-8">
+                              <tr>
+                                <td></td>
+                                <td><input class="form-control" type="search" name="ten" value="" placeholder="Nhập từ khoá tìm kiếm"></td>
+                                <td>
+                                  <select name="level" class="form-control">
+                                    <option value> -- chọn level -- </option>
+                                    <%level.forEach(function(v,k){%>
+                                      <option  value="<%=v.idLevel%>"> <%=v.Loai%> </option>
+                                    <%})%>
+                                  </select>
+                                </td>
+                                <td>
+                                  <select name="idKhoaHoc" class="form-control">
+                                    <option value="0"> -- chọn khoá học -- </option>
+                                    <%khoahoc.forEach(function(v,k){%>
+                                      <option  value="<%=v.idKhoaHoc%>"> <%=v.TenKhoaHoc%> </option>
+                                    <%})%>
+                                  </select>
+                                </td>
+                                <td></td>
+                                <td><input class="btn btn-success" type="submit" value="Tìm kiếm"></td>
+                                <td><a href="/trac-nghiem/dang-bai-trac-nghiem"><button type="button" class="btn btn-info" > + Thêm </button></a></td>
+                              </tr>
+                            </form>
+                            </tbody>
+                            </table>
+                            <table class="table table-striped table-advance table-hover">
+                           <tbody>
+                              <tr>
+                                 <th> STT </th>
+                                 <th><i class="icon_profile"></i>Tiêu Đề</th>
+                                 <th><i class="icon_mail_alt"></i> Giá</th>
+                                 <th><i class="icon_mail_alt"></i> Mức độ </th>
+                                 <th><i class="icon_pin_alt"></i> Thời Gian</th>
+                                 <th><i class="icon_mobile"></i> Tổng Câu</th>
+                                 <th><i class="icon_cogs"></i> Action</th>
+                              </tr>
+                              <% data.forEach(function(val,key){%>
+                                <tr style="display: none;">
+                                  <td></td>
+                                  <td colspan="3" style="height: 25px">
+                                    <div id="thongbao" class="alert alert-success thongbao" style="padding: 5px; margin: 0; text-align: center;"></div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                   <td><%=(key+1) %></td>
+                                   <td><input disabled type="text" name="TieuDeTN" value="<%=val.TieuDeTN%>"></td>
+                                   <td><input disabled type="text" name="Gia" value="<%=val.Gia%>"> VNĐ</td>
+                                   <td>
+                                      <select name="level" disabled>
+                                        <%level.forEach(function(v,k){%>
+                                          <option <%if(val.idLevel == v.idLevel){%> selected <%}%> value="<%=v.idLevel%>"> <%=v.Loai%> </option>
+                                        <%})%>
+                                      </select>
+                                   </td>
+                                   <td><input disabled type="text" name="ThoiGian" value="<%=val.ThoiGian%>"> phút</td>
+                                   <td><%=val.tongcau%></td>
+                                   <td>
+                                    <div class="btn-group">
+                                        <a name="suatn" class="btn btn-primary" href="javascript:void(0)"><span class="glyphicon glyphicon-pencil"></i></a>
+                                        <a idTN="<%=val.idTracNghiem%>" name="luutn" class="btn btn-success" href="javascript:void(0)"><span class="glyphicon glyphicon-ok"></i></a>
+                                        <a class="btn btn-warning" href="/admin/trac-nghiem/chi-tiet/<%=val.idTracNghiem%>"><span class="glyphicon glyphicon-search"></a>
+                                        <a idTN="<%=val.idTracNghiem%>" name="xoatn" class="btn btn-danger" href="javascript:void(0)"><i class="icon_close_alt2"></i></a>
+                                    </div>
+                                    </td>
+                                </tr>
+                              <%  }) %>   
+                              <div id="wait" style="width:69px;height:89px;position:fixed;top:35%;left:49%;padding:2px;"><img src='https://www.w3schools.com/jquery/demo_wait.gif' width="64" height="64" /></div>
+                           </tbody>
+                        </table>
+                      </section>
+                  </div>
+              </div>
+            </section>
+        </section>
+<% include ../../admin/block/footer %>
+        
+        <script>
+          $(document).ready(function() {
+
+           $('#wait').hide();
+           $('a[name="luutn"]').hide();
+           $('a[name="suatn"]').click(function(event) {
+              $(this).closest('tr').find('input').each(function(index, el) {
+                  el.disabled = false;
+              });
+              $(this).closest('tr').find('select').each(function(index, el) {
+                  el.disabled = false;
+              });
+              $(this).next('a').show();
+              $(this).hide();
+           });
+
+           $('a[name="luutn"]').click(function(event) {
+              self = $(this);
+              $('#wait').show();
+              idTN = $(this).attr('idTN');
+              tieude = $(this).closest('tr').find('input[name="TieuDeTN"]').val();
+              gia = $(this).closest('tr').find('input[name="Gia"]').val();
+              thoigian = $(this).closest('tr').find('input[name="ThoiGian"]').val();
+              level = $(this).closest('tr').find('select[name="level"]').val();
+              $.ajax({
+                url: '/admin/update-trac-nghiem/'+idTN+'/'+tieude+'/'+gia+'/'+thoigian+'/'+level,
+                type: 'GET',
+                dataType: 'html',
+              })
+              .done(function(data) {
+                $('.thongbao').html(data)
+                $('#wait').hide(2000, function() {
+                  $(self).closest('tr').find('input').each(function(index, el) {
+                    el.disabled = true;
+                  });
+                  $(self).closest('tr').find('select').each(function(index, el) {
+                    el.disabled = true;
+                  });
+                  $(self).closest('tr').prev().css('display', '');
+                  $(self).prev('a').show();
+                  $(self).hide();
+                  setTimeout(function(){
+                    $(self).closest('tr').prev().css('display', 'none');
+                  }, 2000);
+                });
+              })
+           });
+
+           //xoá trắc nghiệm
+           $('a[name="xoatn"]').click(function(event) {
+             if(confirm('Bạn có chắc chắn muốn xoá không ?')){
+                idTN = $(this).attr('idTN');
+                self = $(this);
+                $('#wait').show();
+                $.ajax({
+                  url: '/admin/delete-trac-nghiem/JFDS54FS4FSD1F/'+idTN,
+                  type: 'GET',
+                  dataType: 'html',
+                })
+                .done(function(data) {
+                  $('#wait').hide(3000,function(){
+                    $(self).closest('tr').remove();
+                  });
+                })           
+             }else {
+                 $('#wait').hide(1000); 
+              }
+           });
+        });
+        </script>

@@ -1,0 +1,183 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<style>
+  td{
+    padding: 0 5px 20px 0;
+  } 
+</style>
+    	<section id="main-content">
+    		<section class="wrapper">
+                  <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                              <h2>CÁC KHOÁ HỌC CỦA BẠN</h2>
+                          
+                          <table class="table-hover">
+                           <tbody>
+                            <form action="" method="get" accept-charset="utf-8">
+                              <tr>
+                                <td></td>
+                                <td><input class="form-control" type="search" name="ten" value="" placeholder="Nhập từ khoá tìm kiếm"></td>
+                                <td>
+                                  <select class="form-control" name="loai">
+                                    <option value=""> -- Loại khoá học -- </option>
+                                    <%loai.forEach(function(v,k){%>
+                                     <option value="<%=v.idLoaiKH%>">
+                                      <%=v.TenLoaiKhoaHoc%></option>
+                                    <%})%>
+                                   </select>
+                                </td>
+                                <td><input class="btn btn-success" type="submit" value="Tìm kiếm"></td>
+                                <td></td>
+                                <td></td>
+                                <td><a href="/admin/them-khoa-hoc"><button type="button" class="btn btn-info" > + Thêm </button></a></td>
+                              </tr>
+                            </form>
+                              <% if(data == "") { width = "style=width:150px" } else { width=""; }%>
+                              <tr>
+                                 <th <%=width%> >STT </th>
+                                 <th <%=width%>><i class="icon_profile"></i> Khoá Học</th>
+                                 <th <%=width%>><i class="icon_calendar"></i> Aslias </th>
+                                 <th <%=width%>><i class="icon_calendar"></i> Loại </th>
+                                 <th <%=width%>><i class="icon_mail_alt"></i> Hình </th>
+                                 <th <%=width%>><i class="icon_mail_alt"></i> Giá </th>
+                                 <th <%=width%>> Actions </th>
+                              </tr>
+                              <% data.forEach(function(val,key){%>
+                                <tr style="display: none;">
+                                  <td></td>
+                                  <td colspan="3" style="height: 25px">
+                                    <div id="thongbao" class="alert alert-success thongbao" style="padding: 5px; margin: 0; text-align: center;"></div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                   <td> <%=(key+1)%> </td>
+                                   <td><input disabled type="text" name="ten" value="<%=val.TenKhoaHoc%>"></td>
+                                   <td><input disabled type="text" name="alias" value="<%=val.Aslias_KH%>"></td>
+                                   <td>
+                                     <select class="form-control" disabled name="loai">
+                                      <%loai.forEach(function(v,k){%>
+                                       <option <%if(val.idLoaiKH==v.idLoaiKH){%> selected <%}%> value="<%=v.idLoaiKH%>">
+                                        <%=v.TenLoaiKhoaHoc%></option>
+                                      <%})%>
+                                     </select>
+                                   </td>
+                                   <td>
+                                      <img width="90" src="/images/<%=val.HinhKH%>">
+                                      <form id="uploadForm<%=val.idKhoaHoc%>" method="post" action="/admin/ajax-upload-images-khoa-hoc/<%=val.idKhoaHoc%>" enctype= multipart/form-data>
+                                        <input type="hidden" name="ten2" id="ten2">
+                                        <input type="hidden" name="alias2" id="alias2">
+                                        <input type="hidden" name="loai2" id="loai2">
+                                        <input type="hidden" name="gia2" id="gia2">
+                                        <input  style="width: 200px" disabled type="file" name="hinh">
+                                        <input type="submit" name="submit" class="hidden">
+                                      </form>
+                                   </td>
+                                   <td ><input style="width: 125px"  disabled type="number" name="gia" value="<%=val.GiaKhoaHoc%>">VNĐ</td>
+                                   <td>
+                                    <div class="btn-group">
+                                        <a name="suakh" class="btn btn-warning" href="javascript:void(0)"><span class="glyphicon glyphicon-pencil"></i></a>
+                                        <a name="luukh" class="btn btn-success" href="javascript:void(0)"><i class="icon_check_alt2"></i></a>
+                                        <a idKhoaHoc="<%=val.idKhoaHoc%>" class="btn btn-danger xoakh" href="javascript:void(0)"><i class="icon_close_alt2"></i></a>
+                                    </div>
+                                    </td>
+                                </tr>
+                              <%}) %>  
+                              <div id="wait" style="width:69px;height:89px;position:fixed;top:35%;left:49%;padding:2px;"><img src='https://www.w3schools.com/jquery/demo_wait.gif' width="64" height="64" /></div>                            
+                           </tbody>
+                        </table>
+                      </section>
+                  </div>
+              </div>
+            </section>
+        </section>
+<% include ../../admin/block/footer %>
+
+<!-- jquery using ajax upload form -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('a[name="luukh"]').hide();
+    $('#wait').hide(1000)
+
+    // Sửa
+    $('a[name="suakh"]').click(function(event) {
+      self = $(this);
+      $(self).closest('tr').find('input').each(function(index, el) {
+          el.disabled = false; 
+      });
+      $(self).closest('tr').find('select').each(function(index, el) {
+          el.disabled = false; 
+      });
+      $(this).next('a').show();
+      $(this).hide();
+    });
+
+    //Lưu
+    $('a[name="luukh"]').click(function(event) {
+        $('#wait').show();    
+        ten = $(this).closest('tr').find('input[name="ten"]').val();
+        alias = $(this).closest('tr').find('input[name="alias"]').val();
+        $(this).closest('tr').find('input[name="ten2"]').val(ten);
+        $(this).closest('tr').find('input[name="alias2"]').val(alias);
+        $(this).closest('tr').find('input[name="loai2"]').val($(this).closest('tr').find('select[name="loai"]').val());
+        $(this).closest('tr').find('input[name="gia2"]').val($(this).closest('tr').find('input[name="gia"]').val());
+        $(this).closest('tr').find('form').find('input[name="submit"]').click();
+    });
+
+    <% data.forEach(function(val,key){ %>
+      $('#uploadForm'+ <%=val.idKhoaHoc%>).submit(function() {
+        self = $(this);
+        $(this).ajaxSubmit({
+            success: function(data) {
+                $('.thongbao').html('Cập nhật thành công !')
+                $('#wait').hide(2000, function() {
+                    $(self).closest('td').find('img').attr('src', '/images/'+data);
+                    $(self).closest('tr').find('input').each(function(index, el) {
+                      el.disabled = true;
+                    });
+                    $(self).closest('tr').find('select').each(function(index, el) {
+                      el.disabled = true;
+                    });
+                    $(self).closest('td').next().next().find('a[name="suakh"]').css('display', 'block');
+                    $(self).closest('td').next().next().find('a[name="luukh"]').css('display', 'none');
+                    $(self).closest('tr').prev().css('display', '');
+                    $(self).find('input[type="file"]').val(null);
+                    setTimeout(function(){
+                      $(self).closest('tr').prev().css('display', 'none');
+                    }, 2000);
+                });;
+            }
+        });
+        return false;
+    });  
+    <% })%>
+
+    // Xoá
+    $('.xoakh').click(function(event) {
+        $('#wait').show(); 
+        self = $(this);
+        id = $(self).attr('idKhoaHoc');
+        if(confirm("Bạn có chắc chắn muốn xoá không ?")){
+          $.ajax({
+            url: '/admin/xoa-khoa-hoc/'+id,
+            type: 'GET',
+            dataType: 'html',
+          })
+          .done(function(data) {
+             $('#wait').hide(3000,function(){
+              $(self).closest('tr').remove();
+            });
+          })   
+        } else {
+           $('#wait').hide(1000); 
+        }
+    });
+  });
+</script>

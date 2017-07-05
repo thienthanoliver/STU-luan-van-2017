@@ -1,0 +1,166 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+
+	<section class="main-section-1">
+		<h2>Forum chat online</h2>
+		<hr>
+		<div class="row">
+			<div class="col-md-3">
+				<div class="panel panel-primary">
+              	<div class="panel-heading">
+                 	Thành viên đang Online
+              	</div>
+              	<div class="panel-body">
+                 	<ul class="media-list" id="listUser">
+
+                    </ul>
+              	</div>
+           	</div>
+			</div>
+			<div class="col-md-9">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+	                 	Nội dung Chat
+	              	</div>
+	            </div>
+				<div class="noi-dung-chat">
+					<%listMgs.forEach(function(val,key){%>
+						<%if(val.idUser != login){ %>
+							<div><div class="col-md-2">
+							<pre><img class="media-object img-circle" style="max-height:20px;float: left;" src="images/user.png"><%=val.Ten%></pre></div>
+							<div class="col-md-7"><pre><%=val.NoiDung%></pre></div>
+							<div class="col-md-3"><span style="line-height: 40px;float:left"><%=(val.ThoiGian)%></span></div>
+							<div class="clearfix"></div></div>
+						<%} else { %>
+							<div><div class="col-md-1"></div>
+							<div class="col-md-3">
+							<span style="line-height: 40px;float: right"><%=(val.ThoiGian)%></span>
+							</div><div class="col-md-8">
+							<pre style="background: #d9edf7"><%=val.NoiDung%></pre>
+							</div><div class="clearfix"></div></div>
+						<%} %>
+					<%})%>
+				</div>
+				<div class="panel-footer">
+                 	<div class="input-group">
+                    	<input type="text" class="form-control" id="txtMessage" placeholder="Vui lòng nhập nội dung tin nhắn">
+                    	<span class="input-group-btn">
+                    		<button class="btn btn-info" id="btnSend" type="button">Gửi</button>
+                    	</span>
+                 	</div>
+              	</div>
+			</div>
+        </div>
+	</section>
+
+<input type="hidden" id="ten" value="<%=login%> <%=data[0].HoTen%>">
+<% include ../block/footer %>
+<script type="text/javascript" src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var socket = io.connect('http://localhost:3000');
+		function crollDown(){
+			$(".noi-dung-chat").animate({ scrollTop: $(document).height() }, "slow");
+	  		return false;
+		}
+		
+		function TachTen(ten){
+			newName = [];
+			newName['ten'] = "";
+			index = ten.lastIndexOf(' ') ? ten.lastIndexOf(' ') + 1 :0;
+			for( i=index;i<ten.length; i++){
+				newName['ten'] += ten[i];
+			}
+			newName['id'] = parseInt(ten);
+			return newName;
+		}
+		tenUser = TachTen($('#ten').val());
+		$('.chat-online').remove();
+		
+		$('#txtMessage').keypress(function(e) {
+		    if(e.which == 13) {
+		        $('#btnSend').click();
+		    }
+		});
+		function formatDate(d){
+			d = new Date(d);
+	    dformat = 
+	      [h = (d.getUTCHours() - 17) < 10 ? '0'+(d.getUTCHours() - 17) : (d.getUTCHours() - 17),
+	       p = d.getUTCMinutes() < 10 ? '0' + d.getUTCMinutes() : d.getUTCMinutes(),
+	       s = d.getUTCSeconds() < 10 ? '0' + d.getUTCSeconds() : d.getUTCSeconds()].join(':') +' ' +
+	       [(d.getUTCMonth()+1),
+	       d.getUTCDate(),
+	       d.getUTCFullYear()].join('/');
+	       return dformat;
+		}
+		function listMgsSever(data){
+			html = "";
+			data.forEach(function(val,key){
+				if(val.idUser != <%=login%>){
+					html += '<div><div class="col-md-2">'
+					html += '<pre><img class="media-object img-circle" style="max-height:20px;float: left;" src="images/user.png">'+val.Ten+'</pre></div>'
+					html +=	'<div class="col-md-7"><pre>'+val.NoiDung+'</pre></div>'
+					html +=	'<div class="col-md-3"><span style="line-height: 40px;float:left">'+formatDate(val.ThoiGian)+'</span></div>'
+					html +=	'<div class="clearfix"></div></div>';
+				} else {
+					html +=	'<div><div class="col-md-1"></div>'
+					html +=	'<div class="col-md-3">'
+					html +=	'<span style="line-height: 40px;float: right">'+formatDate(val.ThoiGian)+'</span>'
+					html +=	'</div><div class="col-md-8">'
+					html +=	'<pre style="background: #d9edf7">'+val.NoiDung+'</pre>'
+					html +=	'</div><div class="clearfix"></div></div>'
+				}
+			})
+			$('.noi-dung-chat').append(html);
+			crollDown();
+		}
+
+		$('#btnSend').click(function(){
+			mgs = $('#txtMessage').val();
+			$('#txtMessage').val(null);
+			socket.emit('mgs',{mgs : mgs , time : new Date().toLocaleString(), ten : tenUser['ten']})
+
+			html =	'<div><div class="col-md-1"></div>'
+			html +=	'<div class="col-md-3">'
+			html +=	'<span style="line-height: 40px;float: right">'+new Date().toLocaleString();+'</span>'
+			html +=	'</div><div class="col-md-8">'
+			html +=	'<pre style="background: #d9edf7">'+mgs+'</pre>'
+			html +=	'</div><div class="clearfix"></div></div>'
+			$('.noi-dung-chat').append(html);
+			crollDown();
+		})
+		
+		socket.on('mgs',function(data){
+			html = '<div><div class="col-md-2">'
+			html += '<pre><img class="media-object img-circle" style="max-height:20px;float: left;" src="images/user.png">'+data.ten+'</pre></div>'
+			html +=	'<div class="col-md-7"><pre>'+data.mgs+'</pre></div>'
+			html +=	'<div class="col-md-3"><span style="line-height: 40px;float:left">'+data.time+'</span></div>'
+			html +=	'<div class="clearfix"></div></div>';
+			$('.noi-dung-chat').append(html)
+			crollDown();
+		})
+
+		// các thành viên online
+		function listUser(data){
+			html = "";
+			data.forEach(function(val,key){
+				html += '<li class="media" id='+val.idUser+'><div class="media-body">'
+		        html +='<div class="media"><a class="pull-left" href="javascript:void()">'
+		        html +='<img class="media-object img-circle" style="max-height:40px;" src="images/user.png">'
+		        html +='</a><div class="media-body"><h5> ' + val.Ten + ' </h5></div></div></div></li>'
+			})
+	        $('#listUser').html(html)
+		}
+
+		socket.emit('user',{id : tenUser['id'], ten : tenUser['ten'] })
+		socket.on('user',function(data){
+			listUser(data);
+		})
+
+		// list messages sever
+		socket.emit('loadMgs',true);
+		socket.on('listMgs',function(data){
+			listMgsSever(data);
+		});
+	});
+</script>

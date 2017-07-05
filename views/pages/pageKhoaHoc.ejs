@@ -1,0 +1,42 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+    <div class="container">
+        <div class="row">
+        <br /> <br />
+            <div class="container">
+                <h2><%=data[0].TenKhoaHoc%></h2>
+
+                <h6><%-data[0].GioiThieu%></h6>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="main-section team" id="team"><!--main-section team-start-->
+    <div class="container">
+        <h2>DANH SÁCH GIẢNG VIÊN</h2>
+        <h6>*** Chọn giảng viên để học ***</h6>
+        <div class="team-leader-block clearfix">
+        <% data.forEach(function(val,key){ %>
+            <div class="team-leader-box">
+                <div class="team-leader wow fadeInDown delay-03s"> 
+                    <div class="team-leader-shadow"><a href="/khoa-hoc/<%=val.Aslias_KH%>/<%=val.Aslias_NV%>/<%=val.idNV%>/<%=val.idKhoaHoc%>"></a></div>
+                    <img src="/images/<%=val.HinhNV%>" alt="">
+                    <ul>
+                        <li><a href="" class="fa-twitter"></a></li>
+                        <li><a href="" class="fa-facebook"></a></li>
+                        <li><a href="" class="fa-pinterest"></a></li>
+                        <li><a href="" class="fa-google-plus"></a></li>
+                    </ul>
+                </div>
+                <h3 class="wow fadeInDown delay-03s"><%=val.HoTen%></h3>
+                <span class="wow fadeInDown delay-03s"><%=val.Email%></span>
+                <p class="wow fadeInDown delay-03s"> <%=val.GT%></p>
+            </div>
+        <%})%>
+        </div>
+    </div>
+</section><!--main-section team-end-->
+<br /><br />
+<% include ../block/footer %>

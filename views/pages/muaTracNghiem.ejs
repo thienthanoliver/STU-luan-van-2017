@@ -1,0 +1,65 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+
+<div class="container">
+	<section class="main-section">
+    <form action="" method="POST">
+		<div class="row">
+            <br>
+			<h2> Thông tin giao dịch </h2>
+            <p>Để tham gia vào khóa học, bạn cần gởi thông tin cho chúng tôi theo form thông tin tại đây. Sau đó, gởi học phí  tài khoản bên dưới với thông tin xác nhận như hướng dẫn:</p>
+            <% if(success_msg){ %>
+                <h4 style="color: red" align="center"><%=success_msg%></h4>
+            <% } %>
+            <pre style="text-align:center; width : 40%; margin: auto"> Chủ Tài Khoản : NGUYỄN QUỐC BẢO <br> Số Tài Khoản : 4214 9456 0902 7254 <br> Ngân Hàng: ACB – Chi Nhánh Bảo Lộc - Lâm Đồng </pre>
+            <hr>
+            <div class="col-md-4">
+                <h3>Thông tin bài giảng</h3><hr>
+                <strong>Tên Bài Trắc Nghiệm</strong>
+                <input class="form-control" type="text" value="<%=data[0].TieuDeTN%>" disabled>
+                <strong>Giá Tiền</strong>
+                <input class="form-control" value="<%=data[0].Gia%> VNĐ" disabled>
+                <strong>Tên Giảng Viên</strong>
+                <input class="form-control" value="<%=data[0].HoTen%>" disabled>
+                <input type="hidden" name="idTracNghiem" value="<%=data[0].idTracNghiem%>">
+                <input type="hidden" name="gia" value="<%=data[0].Gia%>">
+            </div>
+            <div class="col-md-8">
+                <h3>Thông tin khách hàng</h3><hr>
+                <div class="col-md-6">
+                    <strong>Tên Khách Hàng</strong>
+                    <input name="ten" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <strong>Email :</strong>
+                    <input name="email" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <strong>Địa chỉ :</strong>
+                    <input name="diachi" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <strong>Số điện thoại :</strong>
+                    <input name="phone" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <strong>CMND :</strong>
+                    <input name="cmnd" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <strong>Mã giảm giá ( nếu có ) :</strong>
+                    <input name="code" class="form-control">
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row" align="center">
+            <div>
+                <button class="btn btn-success" type="submit"> Đăng ký mua Trắc Nghiệm </button>
+            </div>
+        </div>
+    </form>
+	</section>
+</div>
+
+<% include ../block/footer %>

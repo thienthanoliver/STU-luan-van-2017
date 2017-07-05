@@ -1,0 +1,242 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+<style>
+    .tn-link{
+        background : gray; 
+        width : 100%; 
+        height: 30px;
+    }
+</style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+    <div class="container">
+        <div class="row">
+        <br /> <br />
+            <div class="container">
+                <h2><%=data[0].TenBaiViet%></h2>
+                <br /><br />
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <%-data[0].NoiDung%><br /><br />
+                        <strong> Nguồn : <%=data[0].Nguon%></strong>
+                        <div style="margin: auto; width: 30%">
+                            <button id="downloadbv" type="button" class="btn btn-success btn-lg">Download</button><br>
+                        </div>
+                        <div style="margin: auto; width: 100%" id="linkdownload"></div>
+                        <br />
+                        <hr>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-1"><img src="/images/user.png" alt=""></div>
+                                <div class="col-md-9">
+                                    <textarea class="form-control" id="comment" placeholder="Bình luận..." ></textarea>
+                                </div>
+                                <div class="col-md-2"><button id='binhluan' type="button" class="btn btn-success"> Bình luận</button></div>
+                            </div>
+                            <hr>
+                            <div class="row" id="listComments"></div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br><br><br>
+<input type="hidden" id="idBaiViet" value="<%=data[0].idBaiViet%>">
+<script>
+    idUser = "<%=idUser%>";
+    $(document).ready(function() {
+
+        $('#downloadbv').click(function(event) {
+            if(idUser == false){
+                $('#linkdownload').html('<br /><a href="/dang-nhap" ><button type="button" class="btn btn-warning btn-md">Đăng nhập đế thấy link </button></a>')
+            }
+            else{
+                $('#linkdownload').html('<br />Link files : <a href="<%=data.LinkFile%>" target="_blank"> <%=data[0].LinkFile%> </a> ');
+            }
+        });
+        // load trắc nghiệm
+        // $.ajax({
+        //     url: '/ajaxLoadTracNghiem/Key-Ajax-SHA1/'+$('#idBaiViet').val(),
+        //     type: 'GET',
+        //     dataType: 'html',
+        // })
+        // .done(function(data) {
+        //     $('#ajaxtn').append(data)
+        // })
+
+        // load comments
+        $.ajax({
+            url: '/binh-luan/load-comments/'+ $('#idBaiViet').val() +'/0',
+            type: 'GET',
+            dataType: 'html',
+        })
+        .done(function(data) {
+            $('#listComments').append(data)
+
+            $('.reply').click(function(event) {
+                id = $(this).attr('id');
+                noidung = $(this).closest('div').prev().find('input[name="reply"]').val();
+                if(idUser != 0){
+                    if(noidung != ''){
+                        $.ajax({
+                            url: '/binh-luan/reply-comments/'+parseInt(id)+'/'+noidung,
+                            type: 'GET',
+                            dataType: 'html'
+                        })
+                        .done(function(e) {
+                            $('#'+id).append(e);
+                            $('input').val(null);
+
+                            $('a[idUser]').each(function() {
+                            if($(this).attr('idUser') != idUser){
+                                    $(this).remove();
+                                }
+                            });
+                            $('a[idUser]').click(function(event) {
+                                idBinhLuan = $(this).attr('idBinhLuan');
+                                idRepBL = $(this).attr('idRepBL');
+                                if(idBinhLuan === undefined){
+                                    $(this).closest('div[class="row"]').remove();
+                                    $.ajax({
+                                        url: '/binh-luan/remove-rep-comments/'+idRepBL,
+                                        type: 'GET',
+                                        dataType: 'html'
+                                    })
+                                } else {
+                                    $(this).closest('div[id="delAll"]').remove();
+                                    $.ajax({
+                                        url: '/binh-luan/remove-comments/'+idBinhLuan,
+                                        type: 'GET',
+                                        dataType: 'html'
+                                    })
+                                }
+                            });
+                        })
+                    } else {
+                        alert('Bạn chưa nhập bình luận !');
+                    }   
+                } else {
+                    alert('Bạn cần phải đăng nhập !');
+                }
+
+            });
+
+            $('a[idUser]').each(function() {
+                if($(this).attr('idUser') != idUser){
+                    $(this).remove();
+                }
+            });
+            $('a[idUser]').click(function(event) {
+                idBinhLuan = $(this).attr('idBinhLuan');
+                idRepBL = $(this).attr('idRepBL');
+                if(idBinhLuan === undefined){
+                    $(this).closest('div[class="row"]').remove();
+                    $.ajax({
+                        url: '/binh-luan/remove-rep-comments/'+idRepBL,
+                        type: 'GET',
+                        dataType: 'html'
+                    })
+                } else {
+                    $(this).closest('div[id="delAll"]').remove();
+                    $.ajax({
+                        url: '/binh-luan/remove-comments/'+idBinhLuan,
+                        type: 'GET',
+                        dataType: 'html'
+                    })
+                }
+            });
+
+            $('a[class="thich"]').click(function(event) {
+                if(idUser != 0){
+                    idBinhLuan = $(this).attr('idBinhLuan');
+                    idRepBL = $(this).attr('idRepBL');
+                    if(idBinhLuan === undefined){
+                        like = $(this).closest('strong').find('span').text();
+                        $(this).closest('strong').find('span').text(parseInt(like)+1);
+                        $(this).replaceWith( "<span style='color:#337ab7'>Like</span>" );
+                        $.ajax({
+                            url: '/binh-luan/like-rep-comments/'+idRepBL,
+                            type: 'GET',
+                            dataType: 'html'
+                        })
+                    } else {
+                        like = $(this).closest('strong').find('span').text();
+                        $(this).closest('strong').find('span').text(parseInt(like)+1);
+                        $(this).replaceWith( "<span style='color:#337ab7'>Like</span>" );
+                        $.ajax({
+                            url: '/binh-luan/like-comments/'+idBinhLuan,
+                            type: 'GET',
+                            dataType: 'html'
+                        })
+                    }
+                } else {
+                    alert("Bạn cần đăng nhập !");
+                }
+            });
+        })       
+
+        //submit bình luận
+
+        $('#binhluan').click(function(event) {
+            id = $(this).attr('id');
+            NoiDung = $('#comment').val();
+            if(idUser != 0){
+                if(NoiDung != ''){
+                    $.ajax({
+                        url: '/binh-luan/insert-comments/'+ $('#idBaiViet').val() +'/0/'+NoiDung,
+                        type: 'GET',
+                        dataType: 'html'
+                    })
+                    .done(function(e) {
+                        $('#listComments').prepend(e)
+                        $('#comment').val(null);
+
+                        $('a[idUser]').each(function() {
+                        
+                        if($(this).attr('idUser') != idUser){
+                                $(this).remove();
+                            }
+                        });
+                        $('a[idUser]').click(function(event) {
+                            idBinhLuan = $(this).attr('idBinhLuan');
+                            idRepBL = $(this).attr('idRepBL');
+                            if(idBinhLuan === undefined){
+                                $(this).closest('div[class="row"]').remove();
+                                $.ajax({
+                                    url: '/binh-luan/remove-rep-comments/'+idRepBL,
+                                    type: 'GET',
+                                    dataType: 'html'
+                                })
+                            } else {
+                                $(this).closest('div[id="delAll"]').remove();
+                                $.ajax({
+                                    url: '/binh-luan/remove-comments/'+idBinhLuan,
+                                    type: 'GET',
+                                    dataType: 'html'
+                                })
+                            }
+                        });
+                    })
+                    
+                } else {
+                    alert('Bạn chưa nhập bình luận !');
+                }   
+            } else {
+                alert('Bạn cần phải đăng nhập !');
+            }
+            
+        });
+    });
+
+    function mua_tn(ele){
+        $(ele).next().show(1000)
+        $(ele).attr('onclick','mua_tn_1(this)')
+    }
+    function mua_tn_1(ele){
+        $(ele).next().hide(1000)
+        $(ele).attr('onclick','mua_tn(this)')
+    }
+</script>
+<% include ../block/footer %>

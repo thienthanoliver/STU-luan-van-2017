@@ -1,0 +1,38 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+
+    <div class="container">
+        <div class="row">
+            <h2>đổi mật khẩu </h2>
+        </div><hr>
+    <form action="" method="POST">
+        <div class="row" >
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <% if(success_msg){ %>
+                        <h3 style="color: red"><%=success_msg%></h3>
+                <% } %>
+                <strong>Mật khẩu cũ :</strong>
+                <input type="password" name="old_pass"  class="form-control" required minlength="3">
+                <strong>Mật khẩu mới :</strong> 
+                <input type="password" name="new_pass" id="new_pass" class="form-control" required minlength="3">
+                <strong> Nhập lại mật khẩu mới : </strong>
+                <input type="password" name="re_new_pass"  class="form-control" required minlength="3">
+                
+            </div>
+        </div>
+        <br>
+                <input type="hidden" name="id" value="<%=data[0].idUser%>">
+                <input type="hidden" name="pass" value="<%=data[0].MatKhau%>">
+        <div class="row" align="center">
+            <a href="/tai-khoan" title=""><button type="button" class="btn btn-success"> Quay Lại </button></a> <button class="btn btn-success" type="submit" id="capnhat"> Cập Nhật </button>
+        </div>
+    </form>
+    </div>
+</section>
+
+
+<% include ../block/footer %>

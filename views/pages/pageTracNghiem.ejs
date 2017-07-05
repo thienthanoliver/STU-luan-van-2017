@@ -1,0 +1,128 @@
+<% include ../block/head %>
+<% include ../block/menuPages %>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
+
+  <div class="main-trac-nghiem">
+  	<br /><br />
+	<h2>Kiểm Tra Trắc Nghiệm</h2>
+	<div class="main-trac-nghiem-left">
+		<div class="cau-tn" >
+			<h3>  Everytime I see your face I get glad or it is: Every time I see your face I get glad Is Everytime only a slang form of the...</h3>
+			<div class="tra-loi-tn">
+				<input type="radio" name="1"> I get glad <br />
+				<input type="radio" name="1"> Every time <br />
+				<input type="radio" name="1"> I see your face <br />
+				<input type="radio" name="1"> Is Everytime 
+			</div>
+		</div>
+		<div class="cau-tn" >
+			<h3>  Everytime I see your face I get glad or it is: Every time I see your face I get glad Is Everytime only a slang form of the...</h3>
+			<div class="tra-loi-tn">
+				<input type="radio" name="1"> I get glad <br />
+				<input type="radio" name="1"> Every time <br />
+				<input type="radio" name="1"> I see your face <br />
+				<input type="radio" name="1"> Is Everytime 
+			</div>
+		</div>
+		<div class="cau-tn" >
+			<h3>  Everytime I see your face I get glad or it is: Every time I see your face I get glad Is Everytime only a slang form of the...</h3>
+			<div class="tra-loi-tn">
+				<input type="radio" name="1"> I get glad <br />
+				<input type="radio" name="1"> Every time <br />
+				<input type="radio" name="1"> I see your face <br />
+				<input type="radio" name="1"> Is Everytime 
+			</div>
+		</div>
+		<div class="cau-tn" >
+			<h3>  Everytime I see your face I get glad or it is: Every time I see your face I get glad Is Everytime only a slang form of the...</h3>
+			<div class="tra-loi-tn">
+				<input type="radio" name="1"> I get glad <br />
+				<input type="radio" name="1"> Every time <br />
+				<input type="radio" name="1"> I see your face <br />
+				<input type="radio" name="1"> Is Everytime 
+			</div>
+		</div>
+		<div class="cau-tn" >
+			<h3>  Everytime I see your face I get glad or it is: Every time I see your face I get glad Is Everytime only a slang form of the...</h3>
+			<div class="tra-loi-tn">
+				<input type="radio" name="1"> I get glad <br />
+				<input type="radio" name="1"> Every time <br />
+				<input type="radio" name="1"> I see your face <br />
+				<input type="radio" name="1"> Is Everytime 
+			</div>
+		</div>
+		<div class="cau-tn" >
+			<h3>  Everytime I see your face I get glad or it is: Every time I see your face I get glad Is Everytime only a slang form of the...</h3>
+			<div class="tra-loi-tn">
+				<input type="radio" name="1"> I get glad <br />
+				<input type="radio" name="1"> Every time <br />
+				<input type="radio" name="1"> I see your face <br />
+				<input type="radio" name="1"> Is Everytime 
+			</div>
+		</div>
+		<div class="cau-tn" >
+			<h3>  Everytime I see your face I get glad or it is: Every time I see your face I get glad Is Everytime only a slang form of the...</h3>
+			<div class="tra-loi-tn">
+				<input type="radio" name="1"> I get glad <br />
+				<input type="radio" name="1"> Every time <br />
+				<input type="radio" name="1"> I see your face <br />
+				<input type="radio" name="1"> Is Everytime 
+			</div>
+		</div>
+	</div>
+
+	<div class="main-trac-nghiem-right">
+		<div class="dong-ho">
+			 <form name="the_form">
+				  <input style="width: 165px; height: 165px; line-height: 165px; text-align: center;font-size: 70px" type="text" name="kq" value="1000" readonly />
+				  <br />
+				  	<div class="text-center" style="margin-top: 5px;">
+		                <button id="tam-dung" type="button" class="input-btn" style=" width:100%; height:36px" >Tạm Dừng</button>
+		            </div>
+			  </form>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+</div>
+
+<div class="clear"></div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.main-trac-nghiem-left').hide();
+	BootstrapDialog.show({
+            message: 'Bạn có 15 phút đề làm bài . OK để bắt đầu',
+            buttons: [{
+                label: 'OK',
+                action: function(dialogItself){
+                	$('.main-trac-nghiem-left').show();
+                	baogio();
+                    dialogItself.close();
+                }
+            }]
+        });
+
+	$('#tam-dung').click(function(event) {
+		$('.main-trac-nghiem-left').hide();
+		alert("Tiếp tục")
+		$('.main-trac-nghiem-left').show();
+	});
+});
+function baogio(){
+  num=document.the_form.kq.value;
+  num=eval(num)-1;
+  if(num==0){
+    BootstrapDialog.alert("het gio");
+    document.the_form.submit();
+  }else{
+      document.the_form.kq.value=num;
+  hengio=setTimeout("baogio();",1000);
+  }
+
+}
+</script>
+<% include ../block/footer %>

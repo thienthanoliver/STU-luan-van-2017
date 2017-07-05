@@ -1,0 +1,106 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    	<section id="main-content">
+    		<section class="wrapper">
+                  <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          <header class="panel-heading">
+                              Thống Kê Khoá Học
+                          </header>
+                          <table class="table table-striped table-advance table-hover">
+                           <tbody>
+                           <form action="" method="get" accept-charset="utf-8">
+                              <tr>
+                                <td><input class="form-control" type="search" name="ten" value="" placeholder="Search"></td>
+                                <td>
+                                  <select class="form-control" name="khoahoc">
+                                    <option value="0"> -- Chọn khoá học -- </option>
+                                    <%khoahoc.forEach(function(val,key){%>                               
+                                      <option <%if(arrActions['khoahoc'] == val.idKhoaHoc){%> selected <%}%> value="<%=val.idKhoaHoc%>"> <%=val.TenKhoaHoc%> </option>                                      
+                                    <%})%>
+                                  </select>
+                                </td>
+                                <td>
+                                  <select class="form-control" name="loai">
+                                    <option value="0"> -- Thể Loại -- </option>
+                                    <option value="1"> Giá </option>
+                                    <option value="2"> Lượt Xem </option>
+                                    <option value="3"> Lượt Mua </option>
+                                    <option value="4"> Điểm đánh giá </option>
+                                    <option value="5"> FREE </option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <select class="form-control" name="sapxep">
+                                    <option value> -- Sắp Xếp -- </option>
+                                    <option value="1"> Giảm dần </option>
+                                    <option value="2"> Tăng dần </option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <select class="form-control" name="level">
+                                    <option>-- Chọn cấp độ --</option>                                  
+                                    <option value="1"> Cơ Bản </option>
+                                    <option value="2"> Nâng Cao </option>
+                                    <option value="3"> Khó </option>
+                                  </select>
+                                </td>
+                                <td><input class="btn btn-success" type="submit" value="Search"></td>
+                              </tr>
+                            </form>     
+                           </tbody>
+                        </table>
+                        <%if(data != ""){%>
+                        <table class="table table-striped table-advance table-hover"  id="table2excel">
+                           <tr>
+                              <th> STT </th>
+                              <th> Bài Giảng </th>
+                              <th> Khoá Học </th>
+                              <th> Tên Giảng Viên </th>
+                              <th> Cấp Độ </th>
+                              <th> <%= Loai %> </th>
+                            </tr>
+                          <%data.forEach(function(val,key){%>
+                           <tr>
+                              <td> <%=(key+1)%> </td>
+                              <td> <%=val.TenBaiViet%> </td>
+                              <td>
+                                <%khoahoc.forEach(function(v,k){ if(v.idKhoaHoc == val.idKhoaHoc){%>                                    
+                                    <%=v.TenKhoaHoc%>
+                                <%}})%>
+                              </td>
+                              <td> <%=val.HoTen%> </td>
+                              <td> <%=val.Loai%> </td>
+                              <% if (Loai == " Điềm đánh giá / người ") { -%>
+                                <td> <%=val.OderBy%> / <%=val.SoNguoiDG%></td>
+                              <% } else { -%>
+                                <td> <%=val.OderBy%> <%if(Loai == " Giá Tiền "){%> VNĐ<%}%></td>
+                              <% } -%>
+                          <%})%>
+                        </table>
+                      <%}%>
+                      </section>
+                      <button class="btn btn-info" id="excel">Export Excel</button>
+                  </div>
+              </div>
+            </section>
+        </section>
+<% include ../../admin/block/footer %>
+<script>
+  $(document).ready(function() {
+    $('#excel').click(function(event) {
+      $("#table2excel").table2excel({
+        exclude: ".noExl",
+        name: "Worksheet Name",
+        filename: "SomeFile"
+      });
+    });
+  });
+</script>

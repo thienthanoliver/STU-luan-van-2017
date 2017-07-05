@@ -1,0 +1,37 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+    <div class="container">
+        <div class="row">
+        <br /> <br />
+            <idv class="col-md-2"></idv>
+        	<div class="col-md-8">
+        		<pre><h2>danh sách bài trắc nghiệm </h2></pre>
+        			<table class="table table-hover">
+                        <% 
+                            if(data != ''){
+                                data.forEach(function(val,key){ 
+                        %>
+                           <tr>
+                                <td><%=(key+1)%></td>
+                                <td><strong><%=val.TieuDeTN%></strong></td>
+                                <td><%if(val.DiemTN !=0 ){%> <%=val.DiemTN%> câu đúng <%}%></td>
+                                <td>
+                                    <%if(val.TrangThaiMua == 0){%>
+                                        <a href="/mua-trac-nghiem/<%=val.idTracNghiem%>" title=""><button class="btn btn-success"> Mua </button></a>
+                                    <%}if(val.TrangThaiMua == 1){%>
+                                        <button class="btn btn-warning disabled"> Đang chờ </button>
+                                    <%}else if (val.TrangThaiMua == 2){%>
+                                        <a href="/thi-trac-nghiem/<%=val.maTN%>"><button class="btn btn-info"> Kiểm Tra </button></a>
+                                    <%}%>
+                                </td>
+                           </tr>
+                        <%})}%>
+                    </table>
+        	</div>
+        </div>
+    </div>
+</section>
+
+<% include ../block/footer %>

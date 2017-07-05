@@ -1,0 +1,25 @@
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+	<div class="container">
+    	<h2>Các khoá học</h2>
+    	<h6>Những khoá học sau đây sẽ giúp bạn hiểu biết nhiều hơn.</h6>
+      <div class="portfolioFilter">  
+        <ul class="Portfolio-nav wow fadeIn delay-02s">
+        	<li><a href="#" data-filter="*" class="current" >All</a></li>
+            <%loaiKH.forEach(function(v,k){%>
+            <li><a href="#" data-filter=".<%=v.TenLoaiKhoaHoc%>" ><%=v.TenLoaiKhoaHoc%></a></li>
+            <% }) %>
+        </ul>
+       </div> 
+        
+	</div>
+    <div class="portfolioContainer wow fadeInUp delay-04s">
+            <%
+                khoahoc.forEach(function(v,k){
+            %>
+                <div class="Portfolio-box <%=v.TenLoaiKhoaHoc%>">
+                	<a href="/khoa-hoc/<%=v.Alias%>/<%=v.idKhoaHoc%>"><img src="/images/<%=v.HinhKH%>" alt="<%=v.TenKhoaHoc%>"></a>	
+                	<h3><%=v.TenKhoaHoc%></h3>
+                </div>
+            <%})%>
+    </div>
+</section><!--main-section-end-->

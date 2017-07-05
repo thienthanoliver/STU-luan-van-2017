@@ -1,0 +1,31 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <section id="main-content">
+      <section class="wrapper">
+          <div class="row">
+              <div class="col-sm-2">
+              </div>
+              <div class="col-sm-8">
+                  <section class="panel">
+                    <form method="POST" enctype="multipart/form-data">
+    	                <strong>Tên Loại Khóa Học</strong>
+                      <input type="text" class="form-control input-text" name="ten" required>
+                      <strong>File Hình</strong>
+                      <input type="file" class="form-control input-text" name="hinh" required>                    
+                      <br/>
+                      <div class="text-center">
+                        <button type="submit" class="btn btn-success">Đăng</button>
+                      </div>
+                    </form>
+                  </section>
+              </div>
+          </div>
+      </section>
+    </section>
+<% include ../../admin/block/footer %>
+

@@ -1,0 +1,45 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+	<% if(khoahoc != 0){ %>
+    <div class="container">
+        <div class="row">
+        <br /> <br />
+        <div class="team-leader-block clearfix">
+        		<div class="team-leader-box"></div>
+                <div class="team-leader-box" style="height: 615px">
+                <div class="team-leader wow fadeInDown delay-03s"> 
+                    <div class="team-leader-shadow"><a href=""></a></div>
+                    <img src="/images/<%=nhanvien[0].HinhNV%>" alt="">
+                    <ul>
+                        <li><a href="" class="fa-twitter"></a></li>
+                        <li><a href="" class="fa-facebook"></a></li>
+                        <li><a href="" class="fa-pinterest"></a></li>
+                        <li><a href="" class="fa-google-plus"></a></li>
+                    </ul>
+                </div>
+                <h3 class="wow fadeInDown delay-03s"><%=nhanvien[0].HoTen%></h3>
+                <span class="wow fadeInDown delay-03s"> Email : <%=nhanvien[0].Email%></span>
+                <span class="wow fadeInDown delay-03s"> Phone : <%=nhanvien[0].Phone%></span>
+                <span class="wow fadeInDown delay-03s"> Địa Chỉ : <%=nhanvien[0].DiaChi%></span>
+                <p class="wow fadeInDown delay-03s"><%=nhanvien[0].GioiThieu%></p>
+            </div>
+        </div>
+        <div class="portfolioContainer wow fadeInUp delay-04s" style="margin: 0px 15%;">
+                <div class="Portfolio-box ">
+                	<a href="/khoa-hoc/<%=khoahoc[0].Aslias_KH%>/co-ban/<%=nhanvien[0].Aslias_NV%>/<%=nhanvien[0].idNV%>/<%=khoahoc[0].idKhoaHoc%>"><img src="/images/khoa-hoc-co-ban.jpg" alt=""></a>	
+                </div>
+                <div class="Portfolio-box ">
+                	<a href="/khoa-hoc/<%=khoahoc[0].Aslias_KH%>/nang-cao/<%=nhanvien[0].Aslias_NV%>/<%=nhanvien[0].idNV%>/<%=khoahoc[0].idKhoaHoc%>"><img src="/images/khoa-hoc-nang-cao.jpg" alt=""></a>	
+                </div>
+    	</div>
+        </div>
+    </div>
+    <% } else { %>
+    	<% include ../block/500 %>
+    <% } %>
+</section>
+
+
+<% include ../block/footer %>

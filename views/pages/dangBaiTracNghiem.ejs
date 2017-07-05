@@ -1,0 +1,150 @@
+<% include ../block/head %>
+<% include ../block/menuPages %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/javascripts/ckeditor/ckeditor.js"></script>
+    <script src="/javascripts/ckeditor/samples/js/sample.js"></script>
+    <link rel="stylesheet" href="/javascripts/ckeditor/samples/css/samples.css">
+    <link rel="stylesheet" href="/javascripts/ckeditor/samples/toolbarconfigurator/lib/codemirror/neo.css">
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+	<div class="container">
+    
+        <div class="row">
+        <br /> <br />
+        <% if(success_msg){ %>
+            <h3 style="color: red"><%=success_msg%></h3>
+        <% } %>
+        <h2> ~~***~~ </h2>
+    <form action="/trac-nghiem-file/dang-bai-trac-nghiem/file" method="POST" enctype="multipart/form-data">
+        <input class="form-control input-text" type="text" id="TieuDeTN" name="TieuDeTN" placeholder="Nhập tiêu đề bài trắc nghiệm ">
+        <select id="khoahoc" name='khoahoc' class="form-control input-text" required>
+            <option >-- Chọn Khoá Học --</option>
+            <% data.forEach(function(val, key){ %>
+                <option value="<%=val.idKhoaHoc%>"><%=val.TenKhoaHoc%></option>
+            <% }) %>
+        </select>
+        <select id="level" name='level' class="form-control input-text" required>
+            <option >-- Chọn Level --</option>
+            <option value="1" > Cơ Bản </option>
+            <option value="2" > Nâng Cao </option>
+        </select>
+        <select id="baiviet" name='baiviet' class="form-control input-text" required>
+            <option >-- Chọn Bài Viết --</option>
+        </select>
+        <input type="number" min=1000 class="form-control input-text" id="Gia" name="Gia" placeholder="Đơn giá bài trắc nghiệm ( VNĐ )" required/>
+        <input type="number" min=15 class="form-control input-text" id="ThoiGian" name="ThoiGian" placeholder="Thời gian làm bài ( phút )" required/>
+        <br />
+        <h2> Chọn Files Trắc nghiệm </h2>
+        <br />
+        <div class="container">
+            <input type="file" class="form-control input-text" name="file" required/>
+            <div class="text-center">
+                <button type="submit" class="input-btn">Đăng</button>
+            </div>
+        </div>
+    </form>    
+        <br /><br /><br />
+        <div class="container">
+
+            <h2> Hoặc nhập tối thiểu 10 câu trắc nghiệm </h2>
+        </div>
+        <br />
+
+        <form action="" method="POST" id="form-dang-trac-nghiem">
+            <div class="col-lg-6 col-sm-7 wow fadeInLeft">
+                <strong>Để up ảnh các bạn vào <a href="http://upanh.vforum.vn/" target="blank"> upanh.vforum.vn</a>, sau đó copy kết quả tab <span style="color: red">LINK ẢNH</span> dán vào bài viết hình ảnh sẽ được hiển thị</strong>
+              <div class="panel-body" id="editor" name="editor"></div>              
+            </div>
+            <div class="col-lg-6 col-sm-5 wow fadeInUp delay-05s" style="padding-top: 5%">
+                <h4 style=" float: right;color: red; ">Đáp án đúng : </h4>
+                <div class="form-group">
+                    <input type="text" class="form-control input-text" style="width: 80% ; float: left;" id="traloi1_1" name="traloi1_1" placeholder="Đáp án 1" required/>
+                    <input value="1" style="width: 19%; height: 25px ; margin-top: 2% ; float: left;" type="radio" name="dapan1">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control input-text" style="width: 80% ; float: left;" id="traloi1_2" name="traloi1_2" placeholder="Đáp án 2" required />
+                    <input value="2" style="width: 19%; height: 25px ; margin-top: 2% ; float: left;" type="radio" name="dapan1">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control input-text" style="width: 80% ; float: left;" id="traloi1_3" name="traloi1_3" placeholder="Đáp án 3" required />
+                    <input value="3" style="width: 19%; height: 25px ; margin-top: 2% ; float: left;" type="radio" name="dapan1">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control input-text" style="width: 80% ; float: left;" id="traloi1_4" name="traloi1_4" placeholder="Đáp án 4" required />
+                    <input value="4" style="width: 19%; height: 25px ; margin-top: 2% ; float: left;" type="radio" name="dapan1">
+                </div>  
+            </div>
+        </div>
+        <br />
+        <p><a class="btn btn-info btn-lg" id="dang-trac-nghiem"><span class="glyphicon glyphicon-plus"></span> Thêm /Lưu</a></p>
+        <div class="text-center">
+            <button type="button" id="tn-submit" class="input-btn">Hoàn Thành</button>
+        </div>
+    </form>
+    </div>
+</section><!--main-section-end-->
+<script>
+
+    $(document).ready(function() {
+        initSample();
+        $('#khoahoc').change(function() {
+            $.ajax({
+                url: '/ajaxLoadBaiViet/Key-Ajax-SHA1/'+$('#khoahoc').val(),
+                type: 'GET',
+                dataType: 'html',
+            })
+            .done(function(data) {
+                $('#baiviet').html(data);
+            })
+        });
+
+        ArrQuestion = [];
+        index = 0;
+        $('#dang-trac-nghiem').click(function() {  
+            cauhoi = CKEDITOR.instances.editor.getData();
+            t1 = $('#traloi1_1').val();
+            t2 = $('#traloi1_2').val();
+            t3 = $('#traloi1_3').val();
+            t4 = $('#traloi1_4').val();
+            dapan = $('input[name="dapan1"]:checked').val();
+            if(cauhoi == "" || t1 == "" || t2 == "" || t3 == "" || t4 == "" || (dapan+'2') === 'undefined2' ){
+                alert("Xin nhập đầy đủ");
+            } else {
+                ArrQuestion.push({cauhoi : cauhoi, t1 : t1, t2 : t2, t3 : t3, t4 : t4, dapan : dapan})
+                index++;
+                document.getElementById("form-dang-trac-nghiem").reset();
+                CKEDITOR.instances.editor.setData('');
+                alert("Nhập câu tiếp theo !")   
+            }   
+        });
+
+        $('#tn-submit').click(function(event) {
+
+            tieude = $('#TieuDeTN').val();
+            kh = $('#khoahoc').val();
+            bv = $('#baiviet').val();
+            Gia = $('#Gia').val();
+            level = $('#level').val();
+            ThoiGian = $('#ThoiGian').val();
+            if( kh == "" || bv == "" || Gia == "" || ThoiGian == "" || tieude =="" ){
+                alert("Xin nhập thông tin đầy đủ !");
+            } else if( index < 2){
+                alert("Nhập tối thiểu 10 câu trắc nghiệm ")
+            } else {
+                 $.ajax({
+                    url: '/trac-nghiem/dang-bai-trac-nghiem/'+index+'/'+kh+'/'+bv+'/'+Gia+'/'+ThoiGian + '/' + tieude +'/'+level,
+                    type: 'POST',
+                    data: {ArrQuestion},
+                })
+                .done(function(data) {
+                    if(data){
+                        alert("Đăng thành công !")
+                        console.log(data)
+                        window.location.href = data;
+                    }
+                })
+            }       
+        });
+    });    
+</script>
+
+<% include ../block/footer %>

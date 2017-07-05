@@ -1,0 +1,72 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+
+<div class="container">
+	<section class="main-section">
+		<div class="row">
+			<div class="col-lg-6 col-sm-7 wow fadeInLeft">
+				<br>
+            	<div class="contact-info-box address clearfix">
+                	<h3><i class=" icon-map-marker"></i>Address:</h3>
+                	<span>308 Negra Arroyo Lane<br>Albuquerque, New Mexico, 87111.</span>
+                </div>
+                <div class="contact-info-box phone clearfix">
+                	<h3><i class="fa-phone"></i>Phone:</h3>
+                	<span>1-800-BOO-YAHH</span>
+                </div>
+                <div class="contact-info-box email clearfix">
+                	<h3><i class="fa-pencil"></i>email:</h3>
+                	<span>hello@knightstudios.com</span>
+                </div>
+            	<div class="contact-info-box hours clearfix">
+                	<h3><i class="fa-clock-o"></i>Hours:</h3>
+                	<span><strong>Monday - Thursday:</strong> 10am - 6pm<br><strong>Friday:</strong> People work on Fridays now?<br><strong>Saturday - Sunday:</strong> Best not to ask.</span>
+                </div>
+                <ul class="social-link">
+                	<li class="twitter"><a href="#"><i class="fa-twitter"></i></a></li>
+                    <li class="facebook"><a href="#"><i class="fa-facebook"></i></a></li>
+                    <li class="pinterest"><a href="#"><i class="fa-pinterest"></i></a></li>
+                    <li class="gplus"><a href="#"><i class="fa-google-plus"></i></a></li>
+                    <li class="dribbble"><a href="#"><i class="fa-dribbble"></i></a></li>
+                </ul>
+            </div>
+			<div class="col-lg-6 col-sm-5 wow fadeInUp delay-05s">
+            	<div class="form">
+                	
+                    <div id="sendmessage">Your message has been sent. Thank you!</div>
+                    
+                    <form action="" method="post" role="form" id="formDangKy" class="contactForm">
+                    	<br>
+                    	<div class="validation"> <%=msg%></div>
+                        <div class="form-group">
+                            <input type="email" class="form-control input-text" name="Email" id="email" placeholder="Your Email" data-rule="email" required/>
+                            <div class="validation"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control input-text" name="HoTen" placeholder="Your FullName" required/>
+                            <div class="validation"></div>
+                        </div>
+                        <div class="form-group">
+                            <input maxlength=11 type="text" class="form-control input-text" onkeypress='return isNumberKey(event)' id="phone" name="Phone" placeholder="Your Number Phone" required/>
+                            <div class="validation"></div>
+                        </div>
+                        <div class="form-group">
+                            <input minlength=3 type="password" class="form-control input-text" id="password" name="Password" id="subject" placeholder="Enter Your Password 6 character" required />
+                            <div class="validation"></div>
+                        </div>
+                        <div class="form-group">
+                            <input minlength=3 type="password" class="form-control input-text" id="repassword" name="repassword" id="subject" placeholder="Re Password" required />
+                            <div class="validation" id="valrepassword"></div>
+                        </div>
+                        <div class="text-center">
+                        	<button onclick=" return dangKySubmit()" type="submit" class="input-btn">Đăng Ký</button>
+                        </div>
+                        <br>
+                    </form>
+                </div>	
+            </div>
+        </div>
+	</section>
+</div>
+
+<% include ../block/footer %>

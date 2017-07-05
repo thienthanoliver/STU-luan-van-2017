@@ -1,0 +1,97 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+      <section id="main-content">
+        <section class="wrapper">
+                  <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          <header class="panel-heading">
+                              <h3>CÁC BÀI GIẢNG ĐÃ ĐĂNG KÝ</h3>
+                          </header>
+                          
+                          <table class="table table-striped table-advance table-hover">
+                           <tbody>
+                           <form action="" method="get" accept-charset="utf-8">
+                              <tr>
+                                <td></td>
+                                <td><input class="form-control" type="text" name="tenkhachhang" value="" placeholder="Nhập tên khách hàng"></td>
+                                <td>
+                                  <select class="form-control" name="sapxep">
+                                      <option value="1"> Mới nhất </option>
+                                      <option value="2"> Cũ </option>
+                                  </select>
+                                </td>
+                                <td></td>
+                                <td>
+                                  <label><input type="radio" name="loai" value="0"> Tất cả</label> - 
+                                  <label><input type="radio" name="loai" value="1"> Đang chờ </label> -
+                                  <label><input type="radio" name="loai" value="2"> Đã Thanh toán </label>
+                                </td>
+                                <td><input class="btn btn-success" type="submit" value="Search"></td>
+                              </tr>
+                            </form>   
+                           </tbody>
+                        </table>
+                      <table class="table table-striped table-advance table-hover">
+                          <tr>
+                            <th> STT </th>
+                            <th> Bài Giảng </th>
+                            <th> Tên Khách Hàng </th>
+                            <th> Phone </th>
+                            <th> CMND </th>
+                            <th> Ngày Mua </th>
+                            <th> Trạng Thái </th>
+                          </tr>
+                        <%data.forEach(function(val,key){%>
+                          <tr>
+                            <td><%=(key+1)%></td>
+                            <td> <%=val.TenBaiViet%> </td>
+                            <td> <%=val.TenKhachHang%> </td>
+                            <td><%=val.Phone%> </td>
+                            <td> <%=val.CMND%> </td>
+                            <td> <%=val.NgayMua.toDateString()%> </td>
+                            <td>
+                            <%if(val.TrangThai == 1){%>
+                              <button class="btn btn-success disabled"> <span class="glyphicon glyphicon-ok"></span> </button>
+                            <%} else {%>
+                              <button id="<%=val.idchitiet%>" class="btn btn-warning ok_1"> <span class="glyphicon glyphicon-remove"></span> </button>
+                              <button class="btn btn-success disabled ok_2"> <span class="glyphicon glyphicon-ok"></span> </button>
+                            <%}%>
+                            </td> 
+                          </tr>
+                        <%})%>
+                      </table>
+                      </section>
+                  </div>
+              </div>
+            </section>
+        </section>
+<% include ../../admin/block/footer %>
+<script>
+  $(document).ready(function() {
+    $('.ok_2').hide();
+
+    $('.ok_1').click(function(event) {
+      self = $(this);
+      if(confirm("Thanh toán cho khách hàng này ?")){
+        $.ajax({
+          url: '/admin/AJAX-sadjshagdsakjgdsadgasdgsakdhsadask/'+$(self).attr('id'),
+          type: 'GET',
+          dataType: 'html',
+        })
+        .done(function(data) {
+          if(data == "ok"){
+            $(self).next().show();
+            $(self).hide();
+          }
+        })
+      }
+    });
+  });
+</script>

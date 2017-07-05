@@ -1,0 +1,20 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+	<div class="container">
+        <br />
+    	<h2>Trắc nghiệm</h2>
+        <br /> <br/>
+	</div>
+    <div class="portfolioContainer wow fadeInUp delay-04s">
+            <% data.forEach(function(val,key){ 
+            %>
+                <div class="Portfolio-box ">
+                	<a href="/danh-sach-trac-nghiem/<%=val.Aslias_KH%>/<%=val.idKhoaHoc%>"><img src="/images/<%=val.HinhKH%>" alt=""></a>	
+                	<h3><%=val.TenKhoaHoc%></h3>
+                </div>
+            <% }) %>
+    </div>
+</section><!--main-section-end-->
+<% include ../block/footer %>

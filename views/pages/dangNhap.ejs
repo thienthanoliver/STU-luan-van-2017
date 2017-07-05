@@ -1,0 +1,67 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+
+<div class="container">
+	<section class="main-section">
+		<div class="row">
+			<div class="col-lg-6 col-sm-7 wow fadeInLeft">
+				<br>
+            	<div class="contact-info-box address clearfix">
+                	<h3><i class=" icon-map-marker"></i>Address:</h3>
+                	<span>308 Negra Arroyo Lane<br>Albuquerque, New Mexico, 87111.</span>
+                </div>
+                <div class="contact-info-box phone clearfix">
+                	<h3><i class="fa-phone"></i>Phone:</h3>
+                	<span>1-800-BOO-YAHH</span>
+                </div>
+                <div class="contact-info-box email clearfix">
+                	<h3><i class="fa-pencil"></i>email:</h3>
+                	<span>hello@knightstudios.com</span>
+                </div>
+            	<div class="contact-info-box hours clearfix">
+                	<h3><i class="fa-clock-o"></i>Hours:</h3>
+                	<span><strong>Monday - Thursday:</strong> 10am - 6pm<br><strong>Friday:</strong> People work on Fridays now?<br><strong>Saturday - Sunday:</strong> Best not to ask.</span>
+                </div>
+                <ul class="social-link">
+                	<li class="twitter"><a href="#"><i class="fa-twitter"></i></a></li>
+                    <li class="facebook"><a href="#"><i class="fa-facebook"></i></a></li>
+                    <li class="pinterest"><a href="#"><i class="fa-pinterest"></i></a></li>
+                    <li class="gplus"><a href="#"><i class="fa-google-plus"></i></a></li>
+                    <li class="dribbble"><a href="#"><i class="fa-dribbble"></i></a></li>
+                </ul>
+            </div>
+			<div class="col-lg-6 col-sm-5 wow fadeInUp delay-05s">
+            	<div class="form">
+                	
+                    <div id="sendmessage">Your message has been sent. Thank you!</div>
+                    
+                    <form action="" method="post" role="form" class="contactForm">
+                    	<br><br><br>
+                    	<div class="validation"> <%=msg%></div>
+                        <div class="form-group">
+                            <input type="email" class="form-control input-text" name="email" id="email" placeholder="Your Email" data-rule="email" required/>
+                            <div class="validation"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control input-text" name="password" id="subject" placeholder="Your Password" required />
+                            <div class="validation"></div>
+                        </div>
+                        
+                        <div class="text-center">
+                        	<button type="submit" class="input-btn">Đăng Nhập</button>
+                        </div>
+                        <br>
+                        <div class="text-center">
+                        	<p>Nếu bạn chưa có tài khoản <a href="/dang-ky">Đăng ký</a></p>
+                        </div>
+                        <div class="text-center">
+                        	<p><a href="/quen-mat-khau">Quên mật khẩu ?</a></p>
+                        </div>
+                    </form>
+                </div>	
+            </div>
+        </div>
+	</section>
+</div>
+
+<% include ../block/footer %>

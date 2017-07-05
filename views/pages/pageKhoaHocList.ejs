@@ -1,0 +1,87 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="/stylesheets/rating.min.css">
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+    <div class="container">
+    <br><br>
+        <div class="row">
+        		<%if(data){
+                    data.forEach(function(val,key){
+                %>                
+                    <div class="col-sm-3">
+                        <img src="/images/<%=val.HinhKH%>" width="100%">
+                        <pre align="center" style="height: 80px;    word-break: break-word;"><strong style="font-size: 20px;"><%=val.TenBaiViet%></strong></pre>
+                        <div>
+                            <div id="shop" style="width:50%;float:left">
+                                <div class="c-shop-item__details">
+                                    <ul class="c-rating">
+                                        <li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 1){%>is-active<%}%>" data-index="1"></li>
+                                        <li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 2){%>is-active<%}%>" data-index="2"></li>
+                                        <li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 3){%>is-active<%}%>" data-index="3"></li>
+                                        <li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 4){%>is-active<%}%>" data-index="4"></li>
+                                        <li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 5){%>is-active<%}%>" data-index="5"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div style="width:49%;float:left;text-align:right">
+                                <%=val.LuotXem%> Lượt xem
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <pre style="width:100%; float:right"><img src="/images/<%=val.HinhNV%>" width="16%"><strong><%=val.HoTen%></strong></pre>
+                        <hr>
+                        <strong style="width: 70%; float: left;"> <p style=" line-height: 40px"><%=val.Gia%> VNĐ </p></strong> 
+                        <%if(val.Gia < 1){%>
+                            <a href="/bai-giang/<%=val.Alias%>/<%=val.idBaiViet%>" style="text-decoration: none;">
+                                <button style="width: 29%" class="btn btn-success">Học</button>
+                            </a>
+                        <%}else {%>
+                            <%if(val.trangthaimua == 2 ){%>
+                                <a href="/bai-giang/<%=val.Alias%>/<%=val.idBaiViet%>" style="text-decoration: none;">
+                                    <button style="width: 29%" class="btn btn-success">Học</button>
+                                </a>
+                            <%}%>
+                            <%if(val.trangthaimua == 1){%>
+                                <button style="width: 29%" class="btn btn-warning disabled ">Waiting !!!</button>
+                            <%}%>
+                            <%if(val.trangthaimua == 0 && val.Gia > 1){%>
+                                <a href="/mua-bai-giang/<%=val.idBaiViet%>">
+                                    <button style="width: 29%" class="btn btn-info">Mua</button>
+                                </a>
+                            <%}%>
+                        <%}%>
+                    </div>
+                <%})} else {%>
+                    Chưa có !
+                <%}%>
+        	
+        </div>
+    </div>
+</section>
+
+<% include ../block/footer %>
+<script>
+    $(document).ready(function() {
+        $('.c-rating__item').click(function(event) {
+            id = $(this).attr('id');
+            diem = $(this).attr('data-index');
+            $.ajax({
+                url: '/tim-kiem/danh-gia-bai-viet/'+id+'/'+diem,
+                type: 'GET',
+                dataType: 'html'
+            })
+            .done(function(data) {
+                if(data == "ok"){alert("Bạn cần phải đăng nhập để đánh giá !");}
+                if(data == "tontai"){ alert("Bạn đã đánh giá rồi !"); }
+                if(data != "ok" && data != "tontai"){
+                    diem = parseInt(data)
+                    for(i=1 ; i<=diem ; i++){
+                        $('li[id="'+id+'"][data-index="'+i+'"]').addClass("is-active");
+                    }
+                }
+            })  
+        });
+    });
+</script>

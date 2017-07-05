@@ -1,0 +1,81 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
+
+</style>
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+    <div class="container">
+        <div class="row">
+            <h2>thông tin tài khoản</h2>
+        </div><hr>
+
+        <div class="row">
+            <div class="col-md-4">
+                <pre><h3> Họ Tên : <%=data[0].HoTen%></h3><h4> Email : <%=data[0].Email%></h4><h4> Địa chỉ : <%=data[0].DiaChi%></h4><h4> Phone : <%=data[0].Phone%></h4><h4> Ngày Sinh : <%=data[0].NgaySinh.toDateString()%></h4><h4> Giới Tính : <%if(data[0].GioiTinh == 1){%>Nam<%}else{%> Nữ <%}%></h4></pre>
+                    
+                <a href="/tai-khoan/thong-tin" title=""><button class="btn btn-success"> Thay đổi thông tin </button></a>
+                <a href="/tai-khoan/doi-mat-khau" title=""><button class="btn btn-success"> Đổi mật khẩu </button></a>
+            </div>
+            <div class="col-md-4">
+                <h4>CÁC KHOÁ HỌC ĐÃ ĐĂNG KÝ</h4>
+                <%if(mua==0){%>
+                    <pre>Bạn chưa đăng ký khoá học nào !</pre>
+                <%} else {%>
+                    <table class="table table-hover">
+                        <tr>
+                            <th width="40px">STT</th>
+                            <th> Bài Giảng </th>
+                            <th width="90px">Status</th>
+                        </tr>
+                        <%mua.forEach(function(val,key){%>
+                            <tr>
+                                <td><%=(key+1)%></td>
+                                <td> <%=val.TenBaiViet%> </td>
+                                <td>
+                                <%if(val.TrangThai == 1){%>
+                                    <span class="btn btn-success disabled"> đã thanh toán </span>
+                                <%} else {%>
+                                    <span class="btn btn-warning disabled"> đang chờ !!! </span>
+                                <%}%>
+                                </td>
+                            </tr>
+                        <%})%>
+                    </table>
+                <%}%>
+            </div>
+            <div class="col-md-4">
+                <h4> TRẮC NGHIỆM </h4>
+                <%if(tracnghiem == 0){%>
+                    <pre>Bạn chưa có bài trắc nghiệm nào !</pre>
+                <%} else {%>
+                    <table class="table table-hover">
+                        <tr>
+                            <th width="40px">STT</th>
+                            <th> Trắc Nghiệm </th>
+                            <th> Điểm </th>
+                            <th>Status</th>
+                        </tr>
+                    <%tracnghiem.forEach(function(val,key){%>
+                        <tr>
+                            <td><%=(key+1)%></td>
+                            <td> <%=val.TieuDeTN%> </td>
+                            <td> <%if(val.DiemTN != 0){%> <%=val.DiemTN%> <%}%> </td>
+                            <td>
+                                <%if(val.TrangThai == 1){%>
+                                    <span class="btn btn-success disabled"> đã thanh toán </span>
+                                <%} else {%>
+                                    <span class="btn btn-warning disabled"> đang chờ !!! </span>
+                                <%}%>
+                            </td>
+                        </tr>
+                    <%})%>
+                    </table>
+                <%}%>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<% include ../block/footer %>

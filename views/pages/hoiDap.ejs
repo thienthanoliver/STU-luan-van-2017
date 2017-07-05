@@ -1,0 +1,84 @@
+<% include ../block/head %>
+<% include ../block/menuMain %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
+
+.stylish-input-group .input-group-addon{
+    background: white !important; 
+}
+.stylish-input-group .form-control{
+	border-right:0; 
+	box-shadow:0 0 0; 
+	border-color:#ccc;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}
+tr:first-child{
+    background-color: #e9e9e9;
+}
+tr:not(:first-child){
+    background: #EEF6FC;
+    border-bottom: 1px solid gray;
+}
+td{
+    padding: 1%;
+   
+}
+</style>
+<section class="main-section paddind" id="Portfolio"><!--main-section-start-->
+    <div class="container">
+        <div class="row">
+        <h2>Diễn Đàn: Hỏi Đáp Tin Học</h2>
+        <a href="/hoi-dap/gui-de-tai"><button class="form-control btn-success" style="width: 200px"> + Gửi đề tài mới </button></a>
+        <br>
+        	<table style="width: 100%">
+        		<tr>
+        			<td colspan="2" >
+        				<form action="" method="get">
+			            	<div id="imaginary_container"> 
+			                	<div class="input-group stylish-input-group">
+			                    	<input type="text" class="form-control" name="ten"  placeholder="Search" >
+			                    	<span class="input-group-addon">
+			                        	<button type="submit">
+			                            	<span class="glyphicon glyphicon-search"></span>
+			                        	</button>  
+			                    	</span>
+			                	</div>
+			            	</div>
+        				</form>
+        			</td>
+        			<td colspan="2">
+        				<ul class="pagination pagination-sm" style="float: right;">
+                        <% for(i=1;i <= total_pages ; i++){ %>
+						  <li><a href="/hoi-dap?pages=<%=i%>"><%=i%></a></li>
+						<%}%>
+						</ul>
+        			</td>
+        		</tr>
+            <% hoidap.forEach(function(val,key){%>
+        		<tr style="border : 2px black solip">
+        			<td style="width: 3%"> <span class="glyphicon glyphicon-list-alt"></span> </td>
+        			<td  style="width: 68%" ><a href="/hoi-dap/thong-tin/<%=val.idHoiDap%>"><strong><%-val.TieuDe%></strong></a>  </td>
+                    <td style="width: 12%;"> <span style="float: right;"> &nbsp; Lượt xem</span><strong style="float: right;"> <%=val.LuotXem%> </strong></td>
+                    <td style="width: 17%;">
+                    <span  style="float: right;">
+                        <strong> <%=val.HoTen%> </strong> <br>
+                        <%=val.NgayHoi.toDateString()%> 
+                    </span>
+                    </td>
+        		</tr>
+            <%}) %>
+        	</table>
+            <ul class="pagination pagination-sm" style="float: right;">
+                <% for(i=1;i <= total_pages ; i++){ %>
+                  <li><a href="/hoi-dap?pages=<%=i%>"><%=i%></a></li>
+                <%}%>
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+<% include ../block/footer %>

@@ -1,0 +1,70 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="/javascripts/ckeditor/ckeditor.js"></script>
+<script src="/javascripts/ckeditor/samples/js/sample.js"></script>
+<link rel="stylesheet" href="/javascripts/ckeditor/samples/css/samples.css">
+<link rel="stylesheet" href="/javascripts/ckeditor/samples/toolbarconfigurator/lib/codemirror/neo.css">
+    <section id="main-content">
+      <section class="wrapper">
+          <div class="row">
+              <div class="col-sm-2">
+              </div>
+              <div class="col-sm-8">
+                  <section class="panel">
+                    <form method="POST" action="">
+                      <% if(success_msg){ %>
+                          <h3 style="color: red"><%=success_msg%></h3>
+                      <% } %>
+    	                <strong>Title bài giảng</strong>
+                      <input class="form-control input-text" name="ten" required value="<%=baiviet.TenBaiViet%>"><br>
+                      <strong>Khoá học</strong>
+                      <select name="khoahoc" required class="form-control input-text"><br>
+                      <% khoahoc.forEach(function(val,key){%>
+                        <option <%if(baiviet.idKhoaHoc == val.idKhoaHoc){%> selected <%}%> value="<%=val.idKhoaHoc%>"> <%=val.TenKhoaHoc%></option>    
+                      <% }) %>                    
+                      </select><br>
+                      <strong>Cấp độ</strong>
+                      <select name="level" required class="form-control input-text"><br>
+                      <% level.forEach(function(val,key){%>
+                        <option <%if(baiviet.idLevel == val.idLevel){%> selected <%}%> value="<%=val.idLevel%>"> <%=val.Loai%></option>    
+                      <% }) %>                    
+                      </select><br>
+                      <strong>Link Video</strong>
+                      <input class="form-control input-text" name="video" value="<%=baiviet.LinkVideo%>" required>                    
+                      <br/>
+                      <strong>Giá</strong>
+                      <input type="number" name="gia" class="form-control input-text" value="<%=baiviet.Gia%>" required>
+                      <br>
+                      <strong >Nội dung bài giảng</strong><br>
+                      <strong>Để up ảnh các bạn vào <a href="http://upanh.vforum.vn/" target="blank"> upanh.vforum.vn</a>, sau đó copy kết quả tab <span style="color : red">LINK ẢNH </span>dán vào mục hình ảnh sẽ được hiển thị</strong>
+                      <div class="panel-body" id="editor" name="editor"><%-baiviet.NoiDung%></div>
+                      <input type="hidden" id="noidung" name="noidung">
+                      <br>
+                      <strong>Nguồn</strong>
+                      <input name="nguon" class="form-control input-text" value="<%=baiviet.Nguon%>" required>
+                      <br>
+                      <div class="text-center">
+                        <button type="button" onclick="editorr()" class="btn btn-success">Save</button>
+                      </div>
+                    </form>
+                  </section>
+              </div>
+          </div>
+      </section>
+    </section>
+<% include ../../admin/block/footer %>
+
+<script>
+    initSample();
+    function editorr(){
+      var data = CKEDITOR.instances.editor.getData();
+      console.log(324,data)
+      $('#noidung').val(data)
+      $('form').submit()
+  }
+</script>

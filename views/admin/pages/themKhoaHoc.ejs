@@ -1,0 +1,43 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <section id="main-content">
+      <section class="wrapper">
+          <div class="row">
+              <div class="col-sm-2">
+              </div>
+              <div class="col-sm-8">
+                  <section class="panel">
+                    <form method="POST" enctype="multipart/form-data">
+    	                <strong>Tên Khóa Học</strong>
+                      <input type="text" class="form-control input-text" name="ten" required><br>
+                      <strong>Chọn loại khoá học</strong>
+                      <select name="loai" required class="form-control input-text"><br>
+                      <% loai.forEach(function(val,key){%>
+                        <option value="<%=val.idLoaiKH%>"> <%=val.TenLoaiKhoaHoc%></option>    
+                      <% }) %>                    
+                      </select><br>
+                      <strong>File Hình</strong>
+                      <input type="file" class="form-control input-text" name="hinh" required>                    
+                      <br/>
+                      <strong >Giới thiệu khoá học</strong>
+                      <textarea class="form-control input-text" name="gioithieu"></textarea>
+                      <br>
+                      <strong>Giá</strong>
+                      <input type="number" name="gia" class="form-control input-text">
+                      <br>
+                      <div class="text-center">
+                        <button type="submit" class="btn btn-success">Đăng</button>
+                      </div>
+                    </form>
+                  </section>
+              </div>
+          </div>
+      </section>
+    </section>
+<% include ../../admin/block/footer %>
+
