@@ -452,8 +452,9 @@ router.get('/mua-bai-giang/:id',function(req,res){
 router.post('/mua-bai-giang/:id',function(req,res){
   date = new Date();
   date = dateFormat(date,"yyyy-mm-dd")
+  code = req.body.code ? req.body.code : 0;
   connection.query("INSERT INTO mua VALUES (null,?,?,?,?,?,?,?)", 
-      [req.session.idUser,req.body.ten,req.body.email,req.body.diachi,req.body.phone,req.body.cmnd,req.body.code],function(er,data){
+      [req.session.idUser,req.body.ten,req.body.email,req.body.diachi,req.body.phone,req.body.cmnd,code],function(er,data){
           connection.query("INSERT INTO chitietmua VALUES(null,?,?,?,?,?,?,?)",
             [data.insertId,req.body.idBaiViet,0,0,date,req.body.gia,0]);
             req.flash('success_msg',' Yêu cầu đăng ký của bạn đã được gởi. Bạn cần chuyển chi phí cho chúng tôi theo thông tin dưới đây để hoàn tất việc tham gia khóa học. !');
@@ -535,8 +536,9 @@ router.get('/mua-trac-nghiem/:id',function(req,res){
 router.post('/mua-trac-nghiem/:id',function(req,res){
   date = new Date();
   date = dateFormat(date,"yyyy-mm-dd")
+  code = req.body.code ? req.body.code : 0;
   connection.query("INSERT INTO mua VALUES (null,?,?,?,?,?,?,?)", 
-      [req.session.idUser,req.body.ten,req.body.email,req.body.diachi,req.body.phone,req.body.cmnd,req.body.code],function(er,data){
+      [req.session.idUser,req.body.ten,req.body.email,req.body.diachi,req.body.phone,req.body.cmnd,code],function(er,data){
           connection.query("INSERT INTO chitietmua VALUES(null,?,?,?,?,?,?,?)",
             [data.insertId,0,0,req.body.idTracNghiem,date,req.body.gia,0]);
             connection.query("INSERT INTO diemtracnghiem VALUES(null,?,?,?,?)",[req.session.idUser,req.body.idTracNghiem,0,date]);
