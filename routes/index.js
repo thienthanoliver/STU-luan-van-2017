@@ -175,9 +175,10 @@ router.get('/thi-trac-nghiem/:id',function(req, res, next){
 router.post('/ket-qua-thi-trac-nghiem/:id',function(req, res, next){
     date = new Date();
     date = dateFormat(date,"yyyy-mm-dd")
-    arr = req.body['arr'];
+    arr = req.body['arr'] ? req.body['arr'] : [];
     diem = 0;
     tongcau = 0;
+
     connection.query('select * from tracnghiemchitiet where idTracNghiem = ?',[req.params.id],function(error, results, fields){
       results.forEach(function(val,key){
         tongcau++;
@@ -187,6 +188,7 @@ router.post('/ket-qua-thi-trac-nghiem/:id',function(req, res, next){
           }
         })
       })
+      req.session.diemTN = diem+"/"+tongcau;
       connection.query("SELECT (CASE WHEN DiemTN > '"+diem+"/"+tongcau+"' THEN 1 ELSE 0 END) AS Diem FROM `diemtracnghiem` WHERE idTracNghiem = ?",
         [req.params.id],function(er,sosanh){
           if(sosanh[0].Diem == 1){
@@ -207,7 +209,7 @@ router.get("/ket-qua-thi/:id",function(req, res, next){
   connection.query("SELECT * FROM tracnghiem n join diemtracnghiem d on n.idTracNghiem = d.idTracNghiem WHERE d.idTracNghiem = ? AND d.idUser = ? ",
     [req.params.id,req.session.idUser],function(er,data){
       req.session.idUser = req.session.idUser ? req.session.idUser : 0;
-      res.render("pages/ketQuaThi",{'login' : req.session.idUser,data : data});
+      res.render("pages/ketQuaThi",{'login' : req.session.idUser,data : data, diemTN: req.session.diemTN});
     });
 });
 
