@@ -65,9 +65,12 @@ function checkString(string){
 
 router.get('/',function(req, res, next){
 	if(req.session.idNV){
-		res.render('admin/index' ,{hoten : req.session.adHoTen,idLoaiNV : req.session.idLoaiNV});
-	}
-		res.redirect("/admin/dang-nhap");	
+		connection.query("SELECT * FROM reason r join nhanvien n on r.idNV = n.idNV",function(er,data){
+			res.render('admin/index' ,{hoten : req.session.adHoTen,idLoaiNV : req.session.idLoaiNV, data : data});
+		});
+	} else {
+		res.redirect("/admin/dang-nhap");
+	}	
 })
 
 router.get('/dang-nhap',function(req, res, next){
@@ -306,7 +309,7 @@ router.get('/khoa-hoc',function(req, res, next){
 		query = " WHERE 1=1 ";
 	}
 	else {
-		query = " where tt.idNV = "+[req.session.idNV];
+		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
  	}
  	if(req.query.ten !== undefined){
  		query += " AND TenKhoaHoc LIKE '%"+req.query.ten+"%' ";
@@ -323,8 +326,10 @@ router.get('/them-khoa-hoc',function(req, res, next){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	} 
+	tenkh = req.query.tenkh ? req.query.tenkh : '';
+	id = req.query.id ? req.query.id : ''; 
 	connection.query("SELECT * FROM loaikhoahoc",function(e,data){
-		res.render('admin/pages/themKhoaHoc',{hoten : req.session.adHoTen, loai : data, idLoaiNV : req.session.idLoaiNV});
+		res.render('admin/pages/themKhoaHoc',{hoten : req.session.adHoTen, loai : data, idLoaiNV : req.session.idLoaiNV, tenkh : tenkh, id : id});
 	});
 });
 router.post('/them-khoa-hoc',upload.single('hinh'),function(req, res, next){
@@ -332,8 +337,26 @@ router.post('/them-khoa-hoc',upload.single('hinh'),function(req, res, next){
 	connection.query("insert into khoahoc values(null,?,?,?,?,?,?) ",
 		[ req.body.loai,req.body.ten,alias, imageName ,req.body.gioithieu,req.body.gia],function(er,val,sa){
 			connection.query("INSERT INTO thongtingiangvien VALUES(null,?,?) ",[req.session.idNV,val.insertId]);
+			connection.query("DELETE FROM reason WHERE id="+req.body.iddkkh);
 			res.redirect('/admin/khoa-hoc');
 	} );
+});
+
+router.get('/dang-ki-khoa-hoc',function(req, res, next){
+	if(!req.session.adHoTen){
+		res.redirect("/admin/dang-nhap");
+	}
+	res.render('admin/pages/dangKyKhoaHoc',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
+});
+router.post('/dang-ki-khoa-hoc',function(req, res, next){
+	connection.query("INSERT INTO reason VALUES(null,?,?,?)",[req.session.idNV,req.body.tenkh, req.body.lido]);
+	req.flash('success_msg','Gửi yêu cầu thành công !');
+	res.redirect("/admin/dang-ki-khoa-hoc");
+});
+
+router.get("/xoa-khoc-hoc-dang-ki/:id",function(req, res, next){
+	connection.query('DELETE FROM reason WHERE id ='+req.params.id);
+	res.send("ok");
 });
 
 // Xoá khoá học

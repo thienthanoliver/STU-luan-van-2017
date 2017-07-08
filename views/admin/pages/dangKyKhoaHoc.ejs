@@ -1,0 +1,52 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script type="text/javascript" src="/javascripts/jquery.1.8.3.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <section id="main-content">
+        <section class="wrapper">
+                  <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          <header class="panel-heading">
+                              <h3> Đăng ký khoá học mới </h3>
+                          </header>
+                          <br>
+                          <% if(success_msg){ %>
+                              <h3 style="color: red"><%=success_msg%></h3>
+                          <% } %>
+                          <form action="" method="POST">
+                          <div class="row">
+                            <div class="col-md-2">
+                              <label for="tenkh">Tên Khoá Học </label>
+                            </div>
+                            <div class="col-md-9">
+                              <input class="form-control" type="text" name="tenkh" id="tenkh" required>  
+                            </div>
+                          </div>
+                          <br>
+                          <div class="row">
+                            <div class="col-md-2">
+                              <label for="lido"> Lý do </label>
+                            </div>
+                            <div class="col-md-9">
+                              <textarea id="lido" class="form-control" name="lido" ></textarea>  
+                            </div>
+                          </div>
+                            <br>
+                          <div class="row" align="center">
+                            <input class="btn btn-success" type="submit" name="" value="Gửi">
+                          </div>
+                            
+
+                          </form>
+                      </section>
+                  </div>
+              </div>
+            </section>
+        </section>
+<% include ../../admin/block/footer %>

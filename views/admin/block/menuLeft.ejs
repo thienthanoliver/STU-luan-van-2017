@@ -8,6 +8,7 @@
                           <span>Dashboard</span>
                       </a>
                   </li>
+                  <%if(idLoaiNV == 1 || idLoaiNV == 3){%>
 				          <li class="sub-menu">
                       <a href="/admin/loai-khoa-hoc" class="">
                           <i class="glyphicon glyphicon-book"></i>
@@ -20,6 +21,13 @@
                           <span>Khoá Học</span>
                       </a>
                   </li>   
+                  <%}%>
+                  <li class="sub-menu">
+                      <a href="/admin/dang-ki-khoa-hoc" class="">
+                          <i class="glyphicon glyphicon-book"></i>
+                          <span>Đăng ký Khoá Học</span>
+                      </a>
+                  </li> 
                   <li class="sub-menu">
                       <a href="javascript:;" class="">
                           <i class="glyphicon glyphicon-list-alt"></i>
@@ -31,6 +39,7 @@
                           <li><a class="" href="/admin/trac-nghiem">Trắc Nghiệm</a></li>
                       </ul>
                   </li>    
+                  <%if(idLoaiNV == 1 || idLoaiNV == 3){%>
                   <li class="sub-menu">
                       <a href="javascript:;" class="">
                           <i class="glyphicon glyphicon-user"></i>
@@ -63,7 +72,8 @@
                           <li><a class="" href="/admin/thong-ke/giang-vien">Giảng Viên</a></li>
                           <li><a class="" href="/admin/thong-ke/hoc-vien">Học Viên</a></li>
                       </ul>
-                  </li>           
+                  </li>  
+                  <%}%>         
               </ul>
               <!-- sidebar menu end-->
           </div>
