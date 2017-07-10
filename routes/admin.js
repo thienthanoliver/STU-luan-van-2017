@@ -349,7 +349,7 @@ router.get('/dang-ki-khoa-hoc',function(req, res, next){
 	res.render('admin/pages/dangKyKhoaHoc',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 });
 router.post('/dang-ki-khoa-hoc',function(req, res, next){
-	connection.query("INSERT INTO reason VALUES(null,?,?,?)",[req.session.idNV,req.body.tenkh, req.body.lido]);
+	connection.query("INSERT INTO reason VALUES(null,?,'"+req.body.tenkh+"','"+req.body.lido+"')",[req.session.idNV]);
 	req.flash('success_msg','Gửi yêu cầu thành công !');
 	res.redirect("/admin/dang-ki-khoa-hoc");
 });

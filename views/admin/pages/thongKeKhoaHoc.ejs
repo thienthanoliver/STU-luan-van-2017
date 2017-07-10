@@ -44,7 +44,10 @@
                            </tbody>
                         </table>
                       <%if(data != ""){%>
-                        <table class="table table-striped table-advance table-hover"  id="tableID">
+                        <table class="table table-striped table-advance table-hover"  id="table2excel">
+                        <tr>
+                              <th colspan="6" style="text-align: center;">Danh Sách Thống Kê Khóa Học</th>
+                           </tr>
                            <tr>
                               <td> STT </td>
                               <td> Khoá Học </td>
@@ -64,7 +67,7 @@
                           <%})%>
                         </table>
                       <%}%>
-<a href="#" id="click" target="blank">PDF</a>
+                      <button class="btn btn-info" id="excel">Export Excel</button>
                       </section>
                   </div>
               </div>
@@ -137,6 +140,14 @@
         
         exportTableToCSV.apply(this, args);
         
+    });
+
+    $('#excel').click(function(event) {
+      $("#table2excel").table2excel({
+        exclude: ".noExl",
+        name: "Worksheet Name",
+        filename: "SomeFile"
+      });
     });
 });
 </script>

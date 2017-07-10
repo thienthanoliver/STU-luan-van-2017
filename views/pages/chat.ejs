@@ -154,6 +154,7 @@
 
 		socket.emit('user',{id : tenUser['id'], ten : tenUser['ten'] })
 		socket.on('user',function(data){
+			console.log(data);
 			listUser(data);
 		})
 

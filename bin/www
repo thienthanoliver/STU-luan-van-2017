@@ -39,10 +39,10 @@ io.on('connection',function(client){
       if(check[0] === undefined ){
         connection.query('INSERT INTO chatting VALUES(null,?,?)',[data['id'], data['ten'] ]);
       }
-      connection.query("SELECT * FROM chatting", function(er,data){
-        client.broadcast.emit('user', data );
-        client.emit('user', data );
-      });
+    });
+    connection.query("SELECT * FROM chatting", function(er,users){
+      client.emit('user', users );
+      //client.broadcast.emit('user', users );
     });
   })
 

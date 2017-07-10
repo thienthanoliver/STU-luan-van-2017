@@ -102,7 +102,7 @@ router.post('/dang-ky', function(req, res, next) {
               to: Email,
               subject: 'Xác nhận đăng ký',
               html: 'Xin chào bạn : <h1> '+ HoTen +' </h1> vui lòng truy cập link sau để cập nhật <br>'+
-                    '<a href="http://localhost:3000/AS344SDFS2343ddfsfSDssFFE33e/'+results.insertId+'">http://localhost:3000/AS344SDFS2343ddfsfSDssFFE33e/'+results.insertId+'</a>'
+                    '<a href="http://'+req.headers.host+'/AS344SDFS2343ddfsfSDssFFE33e/'+results.insertId+'">http://'+req.headers.host+'/AS344SDFS2343ddfsfSDssFFE33e/'+results.insertId+'</a>'
           }
           transporter.sendMail(mainOptions, function(err, info){
               if (err) {

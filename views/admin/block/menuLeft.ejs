@@ -21,23 +21,25 @@
                           <span>Khoá Học</span>
                       </a>
                   </li>   
-                  <%}%>
+                  <%} else { %>
                   <li class="sub-menu">
                       <a href="/admin/dang-ki-khoa-hoc" class="">
                           <i class="glyphicon glyphicon-book"></i>
                           <span>Đăng ký Khoá Học</span>
                       </a>
                   </li> 
+                  <%}%>
                   <li class="sub-menu">
-                      <a href="javascript:;" class="">
+                      <a href="/admin/bai-giang" class="">
                           <i class="glyphicon glyphicon-list-alt"></i>
-                          <span>Bài Học</span>
-                          <span class="menu-arrow arrow_carrot-right"></span>
+                          <span>Bài Viết</span>
                       </a>
-                      <ul class="sub">
-                          <li><a class="" href="/admin/bai-giang">Bài Viết</a></li>
-                          <li><a class="" href="/admin/trac-nghiem">Trắc Nghiệm</a></li>
-                      </ul>
+                  </li> 
+                  <li class="sub-menu">
+                      <a href="/admin/trac-nghiem" class="">
+                          <i class="glyphicon glyphicon-list-alt"></i>
+                          <span>Trắc Nghiệm</span>
+                      </a>
                   </li>    
                   <%if(idLoaiNV == 1 || idLoaiNV == 3){%>
                   <li class="sub-menu">
