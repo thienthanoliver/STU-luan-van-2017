@@ -1,0 +1,68 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Worksheet Name</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table><tr>
+                              <th> STT </th>
+                              <th> Bài Giảng </th>
+                              <th> Khoá Học </th>
+                              <th> Tên Giảng Viên </th>
+                              <th> Cấp Độ </th>
+                              <th>  Số lượng mua  </th>
+                            </tr><tr>
+                              <td> 1 </td>
+                              <td> Câu lệnh if else trong php </td>
+                              <td>
+                                                                    
+                                    Lập Trình PHP
+                                
+                              </td>
+                              <td> Giảng Viên A </td>
+                              <td> Cơ Bản </td>
+                                                              <td> 2 </td>
+                                                        
+                           </tr><tr>
+                              <td> 2 </td>
+                              <td> Khai báo biến và hằng số trong php </td>
+                              <td>
+                                                                    
+                                    Lập Trình PHP
+                                
+                              </td>
+                              <td> Giảng Viên A </td>
+                              <td> Cơ Bản </td>
+                                                              <td> 1 </td>
+                                                        
+                           </tr><tr>
+                              <td> 3 </td>
+                              <td> Toán tử và biểu thức trong php </td>
+                              <td>
+                                                                    
+                                    Lập Trình PHP
+                                
+                              </td>
+                              <td> Giảng Viên A </td>
+                              <td> Cơ Bản </td>
+                                                              <td> 1 </td>
+                                                        
+                           </tr><tr>
+                              <td> 4 </td>
+                              <td> Các kiểu dữ liệu trong php </td>
+                              <td>
+                                                                    
+                                    Lập Trình PHP
+                                
+                              </td>
+                              <td> Giảng Viên A </td>
+                              <td> Khó </td>
+                                                              <td> 1 </td>
+                                                        
+                           </tr><tr>
+                              <td> 5 </td>
+                              <td> Câu lệnh switch case trong php  </td>
+                              <td>
+                                                                    
+                                    Lập Trình PHP
+                                
+                              </td>
+                              <td> Giảng Viên A </td>
+                              <td> Cơ Bản </td>
+                                                              <td> 0 </td>
+                                                        
+                        </tr></table></body></html>
