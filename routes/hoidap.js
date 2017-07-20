@@ -16,13 +16,14 @@ connection.connect()
 
 router.get('/',function(req, res, next){
 	connection.query('SELECT * FROM hoidap join user ON user.idUser = hoidap.idUser',function(er,hoidap){
+		ten = req.query.ten ? "%"+req.query.ten+"%" : "%%";
 		total_record = hoidap.length;
 		current_page = req.query.pages ? req.query.pages : 1;
 		limit = 10;
 		start = (current_page - 1)*limit;
 		total_pages = Math.ceil(total_record / limit);
 		req.session.idUser = req.session.idUser ? req.session.idUser : 0;
-		connection.query("SELECT * FROM hoidap join user ON user.idUser = hoidap.idUser ORDER BY hoidap.idHoiDap DESC LIMIT "+start+","+limit,function(er,data){
+		connection.query("SELECT * FROM hoidap join user ON user.idUser = hoidap.idUser WHERE TieuDe LIKE '"+ten+"' ORDER BY hoidap.idHoiDap DESC LIMIT "+start+","+limit,function(er,data){
 			res.render("pages/hoiDap",{'login' : req.session.idUser,hoidap : data, total_pages : total_pages});
 		});
 	});

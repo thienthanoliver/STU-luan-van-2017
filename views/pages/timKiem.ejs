@@ -47,55 +47,60 @@
         </form>
         </div><br/>
         <div class="row">
-        <% data.forEach(function(val,key){ %>
-        	<div class="col-sm-3">
-        		<img src="/images/<%=val.HinhKH%>" width="100%">
-        		<hr>
-        		<pre align="center" style="height: 80px;    word-break: break-word;"><strong style="font-size: 20px"><%=val.TenBaiViet%></strong></pre>
-        		<hr>
-        		<div>
-        			<div id="shop" style="width:50%;float:left">
-        				<div class="c-shop-item__details">
-        					<ul class="c-rating">
-        						<li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 1){%>is-active<%}%>" data-index="1"></li>
-        						<li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 2){%>is-active<%}%>" data-index="2"></li>
-        						<li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 3){%>is-active<%}%>" data-index="3"></li>
-        						<li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 4){%>is-active<%}%>" data-index="4"></li>
-        						<li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 5){%>is-active<%}%>" data-index="5"></li>
-        					</ul>
+        <% if (data) { -%>
+            <% data.forEach(function(val,key){ %>
+                <div class="col-sm-3">
+                    <img src="/images/<%=val.HinhKH%>" width="100%">
+                    <hr>
+                    <pre align="center" style="height: 80px;    word-break: break-word;"><strong style="font-size: 20px"><%=val.TenBaiViet%></strong></pre>
+                    <hr>
+                    <div>
+                        <div id="shop" style="width:50%;float:left">
+                            <div class="c-shop-item__details">
+                                <ul class="c-rating">
+                                    <li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 1){%>is-active<%}%>" data-index="1"></li>
+                                    <li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 2){%>is-active<%}%>" data-index="2"></li>
+                                    <li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 3){%>is-active<%}%>" data-index="3"></li>
+                                    <li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 4){%>is-active<%}%>" data-index="4"></li>
+                                    <li id="<%=val.idBaiViet%>" class="c-rating__item <%if(parseInt(val.Diem/val.SoNguoiDG) >= 5){%>is-active<%}%>" data-index="5"></li>
+                                </ul>
 
-        				</div>
-        			</div>
-        			<div style="width:49%;float:left;text-align:right">
-        				<%=val.LuotXem%> Lượt xem
-        			</div>
-        		</div>
-        		<hr>
-        		<img src="/images/<%=val.HinhNV%>" width="16%">
-        		<pre style="width:80%; float:right"><strong><%=val.HoTen%></strong></pre>
-        		<hr>
-        		<strong style="width: 70%; float: left;"> <p style=" line-height: 40px"><%=val.Gia%> VNĐ </p></strong>
-                <%if(val.Gia < 1){%>
-                    <a href="/bai-giang/<%=val.Alias%>/<%=val.idBaiViet%>" style="text-decoration: none;">
-                        <button style="width: 29%" class="btn btn-success">Học</button>
-                    </a>
-                <%}else {%>
-                    <%if(val.trangthaimua == 2 ){%>
+                            </div>
+                        </div>
+                        <div style="width:49%;float:left;text-align:right">
+                            <%=val.LuotXem%> Lượt xem
+                        </div>
+                    </div>
+                    <hr>
+                    <img src="/images/<%=val.HinhNV%>" width="16%">
+                    <pre style="width:80%; float:right"><strong><%=val.HoTen%></strong></pre>
+                    <hr>
+                    <strong style="width: 70%; float: left;"> <p style=" line-height: 40px"><%=val.Gia%> VNĐ </p></strong>
+                    <%if(val.Gia < 1){%>
                         <a href="/bai-giang/<%=val.Alias%>/<%=val.idBaiViet%>" style="text-decoration: none;">
                             <button style="width: 29%" class="btn btn-success">Học</button>
                         </a>
+                    <%}else {%>
+                        <%if(val.trangthaimua == 2 ){%>
+                            <a href="/bai-giang/<%=val.Alias%>/<%=val.idBaiViet%>" style="text-decoration: none;">
+                                <button style="width: 29%" class="btn btn-success">Học</button>
+                            </a>
+                        <%}%>
+                        <%if(val.trangthaimua == 1){%>
+                            <button style="width: 29%" class="btn btn-warning disabled ">Waiting !!!</button>
+                        <%}%>
+                        <%if(val.trangthaimua == 0 && val.Gia > 1){%>
+                            <a href="/mua-bai-giang/<%=val.idBaiViet%>">
+                                <button style="width: 29%" class="btn btn-info">Mua</button>
+                            </a>
+                        <%}%>
                     <%}%>
-                    <%if(val.trangthaimua == 1){%>
-                        <button style="width: 29%" class="btn btn-warning disabled ">Waiting !!!</button>
-                    <%}%>
-                    <%if(val.trangthaimua == 0 && val.Gia > 1){%>
-                        <a href="/mua-bai-giang/<%=val.idBaiViet%>">
-                            <button style="width: 29%" class="btn btn-info">Mua</button>
-                        </a>
-                    <%}%>
-                <%}%>
-        	</div>
-        <%})%>
+                </div>
+            <%})%>
+        <% } else { -%>
+            <h2>Thông tin bạn tìm kiếm không có!</h2>
+        <% } -%>
+        
         </div>
     </div>
 </section>

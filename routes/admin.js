@@ -315,7 +315,7 @@ router.get('/khoa-hoc',function(req, res, next){
  		query += " AND TenKhoaHoc LIKE '%"+req.query.ten+"%' ";
  		if(req.query.loai != ''){ query +=" AND idLoaiKH = "+req.query.loai; }
  	}
-	connection.query("SELECT kh.* FROM khoahoc kh JOIN thongtingiangvien tt on tt.idKhoaHoc = kh.idKhoaHoc "+query ,function(e,data){
+	connection.query("SELECT kh.* FROM khoahoc kh JOIN thongtingiangvien tt on tt.idKhoaHoc = kh.idKhoaHoc "+query +" GROUP BY kh.idKhoaHoc",function(e,data){
 		connection.query("SELECT * FROM loaikhoahoc",function(e,loai){
 			res.render('admin/pages/khoaHoc',{hoten : req.session.adHoTen, data : data, loai : loai, idLoaiNV : req.session.idLoaiNV});
 		});
