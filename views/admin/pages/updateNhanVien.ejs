@@ -1,0 +1,101 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script type="text/javascript" src="/javascripts/jquery.1.8.3.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker({
+        dateFormat: "dd-mm-yy",
+        maxDate: "-340m"
+    });
+
+    $('input[name="phone"]').keypress(function(evt) {
+      var charCode = (evt.which) ? evt.which : event.keyCode
+       if (charCode > 31 && (charCode < 48 || charCode > 57))
+       return false;
+       return true;
+    });
+  })
+</script>
+    <section id="main-content">
+      <section class="wrapper">
+      <br>
+      <br>
+      <h2 style="text-align: center;">Chỉnh sửa thông tin nhân viên</h2>
+          <div class="row">
+              <div class="col-sm-2">
+              </div>
+              <div class="col-sm-8">
+                  <section class="panel">
+                  <div class="validation"> <h3 style="color: red"><% if(success_msg){ %><%=success_msg%><% } %></h3></div>
+                    <form method="POST" action="" enctype='multipart/form-data'>
+    	                <strong>Họ Tên <span style="color: red"><%if(typeof error.ten !== 'undefined'){%><%=error.ten%><%}%></span></strong>
+                      <input type="text" class="form-control input-text" name="ten" value="<%if(typeof data.HoTen !== 'undefined'){%><%=data.HoTen%><%}%>" ><br>
+                      <strong>Loại nhân viên</strong>
+                      <select name="loai"  class="form-control input-text"><br>
+                      <% loai.forEach(function(val,key){%>
+                        <option 
+                          <% if (val.idLoaiNV == data.idLoaiNV) { -%>
+                            selected
+                          <% } -%> 
+                          value="<%=val.idLoaiNV%>"> <%=val.Loai%></option>    
+                      <% }) %>                    
+                      </select><br>
+                      
+
+                      <strong>Email <span style="color: red"><%if(typeof error.email !== 'undefined'){%><%=error.email%><%}%></span></strong>
+                      <input readonly type="email" name="email" class="form-control input-text" value="<%if(typeof data.Email !== 'undefined'){%><%=data.Email%><%}%>">
+                      <br>
+
+                      <strong>Ngày Sinh <span style="color: red"><%if(typeof error.ngaysinh !== 'undefined'){%><%=error.ngaysinh%><%}%></span></strong>
+                      <input type="text" name="ngaysinh" id="datepicker" class="form-control input-text" value="<%if(typeof data.NgaySinh !== 'undefined'){%><%=data.NgaySinh%><%}%>">
+                      <br>
+
+                      <strong style="margin-right: 5%">Giới tính</strong>
+                      <select name="gioitinh"  class="form-control input-text">
+                        <option <%if(data.GioiTinh == 0){%> selected <%}%> value="0">Nữ</option>
+                        <option <%if(data.GioiTinh == 1){%> selected <%}%> value="1"> Nam</option>}                        
+                      </select>
+                      <br>
+
+                      <strong>Số điện thoại <span style="color: red"><%if(typeof error.phone !== 'undefined'){%><%=error.phone%><%}%></span></strong>
+                      <input minlength="10" maxlength="11" type="text" name="phone" id="datepicker" class="form-control input-text" value="<%if(typeof data.Phone !== 'undefined'){%><%=data.Phone%><%}%>">
+                      <br>
+
+                      <strong>Địa chỉ <span style="color: red"><%if(typeof error.diachi !== 'undefined'){%><%=error.diachi%><%}%></span></strong>
+                      <input type="text" name="diachi" id="datepicker" class="form-control input-text" value="<%if(typeof data.DiaChi !== 'undefined'){%><%=data.DiaChi%><%}%>">
+                      <br>
+
+                      <strong>Hình đại diện</strong>
+                      <img src="../../images/<%=data.HinhNV%>" alt="">
+                      <input type="file" name="hinh" class="form-control input-text" >
+                      <br>
+
+                      <strong >Giới thiệu bản thân <span style="color: red"><%if(typeof error.gioithieu !== 'undefined'){%><%=error.gioithieu%><%}%></span></strong>
+                      <textarea class="form-control input-text" name="gioithieu" ><%if(typeof data.GioiThieu !== 'undefined'){%><%=data.GioiThieu%><%}%></textarea>
+                      <br>
+
+                      <input type="hidden" name="idNV" value="<%if(typeof data.idNV !== 'undefined'){%><%=data.idNV%><%}%>">
+                      <div class="text-center">
+                        <button id="comeback" type="button" class="btn btn-success">Quay lại</button>
+                        <button type="submit" class="btn btn-success">Cập nhật</button>
+                      </div>
+                    </form>
+                  </section>
+              </div>
+          </div>
+      </section>
+    </section>
+<% include ../../admin/block/footer %>
+<script>
+  $(document).ready(function() {
+    $('#comeback').click(function(event) {
+      window.history.back();
+    });
+  });
+</script>

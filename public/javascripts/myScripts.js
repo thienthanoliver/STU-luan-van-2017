@@ -6,12 +6,15 @@
    return true;
  }
  function dangKySubmit(){
-   if($('#password').val() == $('#repassword').val()){
+   if($('#password').val() == $('#repassword').val() && $('#password').val() != '' ){
       $('#formDangKy').submit();
    }
     
   else if ($('#repassword').val() != ""){
     $('#valrepassword').html('<p> Mật khẩu nhập lại không đúng !</p>')
+    return false;
+  } else if($('#phone').val().length < 10) {
+    $('#valphone').html('<p> Số điện thoại không đúng !</p>')
     return false;
   }
  }

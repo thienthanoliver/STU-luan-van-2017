@@ -7,7 +7,8 @@
 <script>
   $( function() {
     $( "#datepicker" ).datepicker({
-        dateFormat: "yy-mm-dd"
+        dateFormat: "yy-mm-dd",
+        maxDate: "-180m"
     });
   } );
 
@@ -24,14 +25,14 @@
                         <h3 style="color: red"><%=success_msg%></h3>
                 <% } %>
                 <strong>Họ Tên :</strong>
-                <input type="text" name="hoten" value="<%=data[0].HoTen%>" class="form-control">
+                <input type="text" name="hoten" value="<%=data[0].HoTen%>" class="form-control" required>
                 <strong>Email :</strong> 
                 <input value="<%=data[0].Email%>" class="form-control" disabled>
                 <strong>Phone :</strong>
-                <input type="text" name="phone" value="<%=data[0].Phone%>" class="form-control">
+                <input type="text" name="phone" value="<%=data[0].Phone%>" class="form-control" required>
                 <strong>Địa chỉ :</strong> 
-                <input type="text" name="diachi" value="<%=data[0].DiaChi%>" class="form-control">
-                <strong>Ngày Sinh :</strong>
+                <input type="text" name="diachi" value="<%=data[0].DiaChi%>" class="form-control" required>
+                <strong>Ngày Sinh :</strong><span id="errorDate" style="color: red"></span>
                 <input type="text" name="ngaysinh" id="datepicker" value="<%=data[0].NgaySinh.getFullYear()+'-'+(data[0].NgaySinh.getMonth()+1)+'-'+data[0].NgaySinh.getDate()%>" class="form-control">
                 <strong>Giới Tính : </strong>
                 <select name="gioitinh" class="form-control">
@@ -43,7 +44,7 @@
         <br>
                 <input type="hidden" name="id" value="<%=data[0].idUser%>">
         <div class="row" align="center">
-            <a href="/tai-khoan" title=""><button type="button" class="btn btn-success"> Quay Lại </button></a> <button class="btn btn-success" type="submit"> Cập Nhật </button>
+            <a href="/tai-khoan" title=""><button type="button" class="btn btn-success"> Quay Lại </button></a> <button onclick="return checkDate()" class="btn btn-success" type="submit"> Cập Nhật </button>
         </div>
     </form>
     </div>
@@ -54,4 +55,15 @@
 <script>
     date = new Date("<%=data[0].NgaySinh%>")
     console.log(date.toLocaleDateString())
+
+    function checkDate(){
+        ngaysinh = (new Date($('input[name="ngaysinh"]').val()).getFullYear());
+        date = (new Date().getFullYear())
+
+        if( (date - ngaysinh) < 10 || isNaN(ngaysinh) ){
+            $('#errorDate').html('Ngày sinh không hợp lệ');
+            return false;
+        }  
+        return true;
+    }
 </script>

@@ -83,12 +83,12 @@ router.post('/dang-ky', function(req, res, next) {
      HoTen = req.body.HoTen;
      Email = req.body.Email;
      Password = req.body.Password;
-     date = new Date();
+     date = new Date('1990-01-01');
      date = dateFormat(date,"yyyy-mm-dd")
      connection.query('INSERT INTO user VALUES(null,?,?,SHA1(?),?,"","",1,?,0)', 
       [Email,HoTen ,Password ,Phone, date ],
       function (error, results, fields) {
-        if(error) res.render('pages/dangKy',{'login' : 0,msg : "Email này đã tồn tại"});
+        if(error) res.render('pages/dangKy',{'login' : 0,msg : "Email này đã tồn tại",HoTen: HoTen, Email: Email, Phone: Phone});
         else {
           var transporter =  nodemailer.createTransport({ // config mail server
               service: 'Gmail',
@@ -111,7 +111,8 @@ router.post('/dang-ky', function(req, res, next) {
                   console.log(info)
               }
           });
-          res.render('pages/dangNhap',{'login' : 0,msg : "Đăng ký thành công ! Vui lòng truy cập email để xác nhận quyền truy cập !"});
+          req.flash('success_msg','Đăng ký thành công ! Vui lòng truy cập email để xác nhận quyền truy cập !');
+          res.redirect('/dang-nhap');
         }
      });
 });
@@ -119,6 +120,57 @@ router.post('/dang-ky', function(req, res, next) {
 router.get('/AS344SDFS2343ddfsfSDssFFE33e/:id',function(req,res){
   connection.query("UPDATE user SET TrangThai = 1 WHERE idUser = ?",[req.params.id]);
   res.redirect('/dang-nhap');
+});
+
+router.get('/quen-mat-khau', function(req, res, next){
+  req.session.idUser = req.session.idUser ? req.session.idUser : 0;
+  res.render('pages/quenMatKhau',{'login' : req.session.idUser});
+});
+
+router.get('/ajax-check-email/:email',function(req, res, next){
+  email = req.params.email;
+  connection.query('SELECT * FROM user WHERE Email LIKE ? ',[email],function(er,data){
+    if( typeof data[0] ==='undefined' ){
+      res.send('error');
+    } else{
+      var transporter =  nodemailer.createTransport({ // config mail server
+          service: 'Gmail',
+          auth: {
+              user: 'thienthanoliver4@gmail.com',
+              pass: 'nguyenquocbao'
+          }
+      });
+      var mainOptions = { // thiết lập đối tượng, nội dung gửi mail
+          from: 'Admin Master',
+          to: email,
+          subject: 'Đổi Mật Khẩu',
+          html: 'Xin chào bạn : <h1> '+ data[0].HoTen +' </h1> vui lòng truy cập link sau để cập nhật mật khẩu mới<br>'+
+                '<a href="http://'+req.headers.host+'/AS344SDFS2343d5413dfssdfdsfdsffSDssFFE33e/'+data[0].idUser+'">http://'+req.headers.host+'/AS344SDFS2343d5413dfssdfdsfdsffSDssFFE33e/'+data[0].idUser+'</a>'
+      }
+      transporter.sendMail(mainOptions, function(err, info){
+          if (err) {
+              console.log(err);
+          } else {
+              console.log(info)
+          }
+      });
+      res.send('success');
+    }
+  });
+});
+
+router.get('/AS344SDFS2343d5413dfssdfdsfdsffSDssFFE33e/:id',function(req,res){
+  res.render('pages/capNhatMatKhau',{'login' : 0});
+});
+
+router.post('/AS344SDFS2343d5413dfssdfdsfdsffSDssFFE33e/:id',function(req,res){
+  if(req.body.password != req.body.repassword){
+    req.flash('success_msg','Mật khẩu nhập lại không đúng !');
+    res.redirect('/AS344SDFS2343d5413dfssdfdsfdsffSDssFFE33e/'+req.params.id);
+  } else {
+    connection.query("UPDATE user SET MatKhau = SHA1(?) WHERE idUser = ?",[req.body.password,req.params.id]);
+    res.redirect('/dang-nhap');
+  }
 });
 
 router.get('/trac-nghiem', function(req, res, next) {

@@ -111,7 +111,7 @@ router.get('/loai-khoa-hoc',function(req, res, next){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	} 
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 	connection.query('select * from loaikhoahoc',function(er,val){
@@ -272,7 +272,7 @@ router.post('/ajax-upload-images/:id',upload.single('hinh'), function(req, res, 
 								[ req.body.ten2,req.body.alias2,req.params.id ]);
 			var fs = require('fs');
 			var filePath = './public/images/'+data[0].Hinh; 
-			fs.unlinkSync(filePath);
+			//fs.unlinkSync(filePath);// xóa hình
 			res.send(imageName);
 			imageName = "";
 		});
@@ -474,7 +474,7 @@ router.get('/nhan-vien',function(req, res, next){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	}
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 	connection.query("SELECT * FROM nhanvien WHERE idLoaiNV = 3 ",function(er,nhanvien){
@@ -488,7 +488,7 @@ router.get('/giang-vien',function(req, res, next){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	}
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 	connection.query("SELECT * FROM nhanvien WHERE idLoaiNV = 2 ",function(er,nhanvien){
@@ -502,7 +502,7 @@ router.get('/hoc-vien',function(req, res, next){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	}
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 	connection.query('SELECT * FROM user', function(er,hocvien){
@@ -521,7 +521,7 @@ router.get('/cam-quyen-truy-cap/:loai/:idNV/:idUser/:idLoaiNV',function(req, res
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	} 
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 	if(req.params.idNV!=0){
@@ -543,7 +543,7 @@ router.get('/thong-ke/khoa-hoc',function(req, res, next){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	} 
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 	query = "";Loai = "";ten = req.query.ten ? "'%"+req.query.ten+"%'" : "'% %'";
@@ -591,7 +591,7 @@ router.get('/thong-ke/bai-giang',function(req, res, next){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	} 
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 	arrActions = [];
@@ -659,7 +659,7 @@ router.get('/thong-ke/khoa-hoc-dang-ky',function(req, res, next){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	} 
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 	loai = req.query.loai ? req.query.loai : 0;
@@ -688,7 +688,7 @@ router.get('/thong-ke/trac-nghiem-dang-ky',function(req, res, next){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	} 
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 	loai = req.query.loai ? req.query.loai : 0;
@@ -717,7 +717,7 @@ router.get('/thong-ke/giang-vien',function(req,res){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	} 
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 	ten = req.query.ten ? "'%"+req.query.ten+"%'" : "'% %'"; query = "";
@@ -760,7 +760,7 @@ router.get('/thong-ke/hoc-vien',function(req,res){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	} 
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 	ten = req.query.ten ? "'%"+req.query.ten+"%'" : "'% %'"; query = "";
@@ -806,7 +806,7 @@ router.get('/comments',function(req,res){
 	if(!req.session.adHoTen){
 		res.redirect("/admin/dang-nhap");
 	} 
-	if(req.session.idLoaiNV != 1){
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
 	}
 
@@ -839,6 +839,164 @@ router.get('/comments',function(req,res){
 		});
 	})
 });
+
+router.get('/them-nhan-vien',function(req,res,next){
+	if(!req.session.adHoTen){
+		res.redirect("/admin/dang-nhap");
+	} 
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
+		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
+	}
+	error = {};data = {}
+	connection.query("SELECT * FROM loainhanvien WHERE idLoaiNV <> 1",function(er,loai){
+		res.render('admin/pages/themNhanVien',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV, loai : loai, error: error, data: data});
+	});
+});
+
+router.post('/them-nhan-vien',upload.single('hinh'),function(req,res,next){
+	email = req.body.email;
+	ten = req.body.ten;
+	loai = req.body.loai;
+	ngaysinh = req.body.ngaysinh;
+	gioitinh = req.body.gioitinh;
+	gioithieu = req.body.gioithieu;
+	password = req.body.password;
+	repassword = req.body.repassword;
+	phone = req.body.phone;
+	diachi = req.body.diachi;
+	error = {};
+	data ={
+		email: email,
+		ten: ten,
+		ngaysinh: ngaysinh,
+		gioithieu: gioithieu,
+		phone: phone,
+		diachi: diachi
+	}
+	check = true;
+	if(email == ''){
+		check = false;
+		error.email = "Email không được bỏ trống !";
+	}
+	if(ten == ''){
+		check = false;
+		error.ten = "Tên không được bỏ trống !";
+	}
+	if(ngaysinh == ''){
+		check = false;
+		error.ngaysinh = "Ngày sinh không hợp lệ !";
+	}
+	if(gioithieu == ''){
+		check = false;
+		error.gioithieu = "Giới thiệu không được bỏ trống !";
+	}
+	if(password == ''){
+		check = false;
+		error.password = "Mật Khẩu không được bỏ trống !";
+	}
+	if(password != repassword){
+		check = false;
+		error.repassword = "Mật khẩu nhập lại không đúng !";
+	}
+	if(phone == ''){
+		check = false;
+		error.phone = "Số điện thoại không được bỏ trống !";
+	}
+	if(diachi == ''){
+		check = false;
+		error.diachi = "Địa chỉ không được bỏ trống !";
+	}
+	if (check) {
+		ngaysinh =ngaysinh.slice(0, 10).split('-');
+		ngaysinh = ngaysinh[2]+'-'+ngaysinh[1]+'-'+ngaysinh[0];
+	
+		connection.query('INSERT INTO nhanvien VALUES (null,?,?,?,?,SHA1(?),?,?,?,?,?,?,?,?,?) ',[
+			loai,ten,change_alias(ten),email,password,ngaysinh,phone,diachi,gioitinh,imageName,gioithieu,1,0,1
+		]);
+		req.flash('success_msg','Thêm thành công !');
+		res.redirect("/admin/them-nhan-vien");
+	}else{
+		connection.query("SELECT * FROM loainhanvien WHERE idLoaiNV <> 1",function(er,loai){
+			res.render('admin/pages/themNhanVien',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV, loai : loai, error: error, data: data});
+		});
+	}
+
+})
+
+router.get('/update-nhan-vien/:id',function(req,res,next){
+	if(!req.session.adHoTen){
+		res.redirect("/admin/dang-nhap");
+	} 
+	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
+		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV});
+	}
+	error = {};
+	connection.query("SELECT * FROM loainhanvien WHERE idLoaiNV <> 1",function(er,loai){
+		connection.query("SELECT * FROM nhanvien WHERE idNV = ?",[req.params.id],function(err,data){
+			data[0].NgaySinh = dateFormat(data[0].NgaySinh, 'dd-mm-yyyy');
+
+			res.render('admin/pages/updateNhanVien',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV, loai : loai, error: error, data: data[0]});
+		});
+	});
+});
+
+router.post('/update-nhan-vien/:id',upload.single('hinh'),function(req,res,next){
+	idNV = req.params.id;
+	ten = req.body.ten;
+	loai = req.body.loai;
+	ngaysinh = req.body.ngaysinh;
+	gioitinh = req.body.gioitinh;
+	gioithieu = req.body.gioithieu;
+	phone = req.body.phone;
+	diachi = req.body.diachi;
+	error = {};
+	data ={
+		ten: ten,
+		ngaysinh: ngaysinh,
+		gioithieu: gioithieu,
+		phone: phone,
+		diachi: diachi
+	}
+	check = true;
+	if(ten == ''){
+		check = false;
+		error.ten = "Tên không được bỏ trống !";
+	}
+	if(ngaysinh == ''){
+		check = false;
+		error.ngaysinh = "Ngày sinh không hợp lệ !";
+	}
+	if(gioithieu == ''){
+		check = false;
+		error.gioithieu = "Giới thiệu không được bỏ trống !";
+	}
+	if(phone == ''){
+		check = false;
+		error.phone = "Số điện thoại không được bỏ trống !";
+	}
+	if(diachi == ''){
+		check = false;
+		error.diachi = "Địa chỉ không được bỏ trống !";
+	}
+	if (check) {
+		ngaysinh =ngaysinh.slice(0, 10).split('-');
+		ngaysinh = ngaysinh[2]+'-'+ngaysinh[1]+'-'+ngaysinh[0];
+		hinh='';
+		if(imageName != ''){
+			hinh = " , HinhNV = '"+imageName+"'";
+		}
+		connection.query('UPDATE nhanvien SET idLoaiNV = ?, HoTen = ?, Aslias_NV = ?, NgaySinh = ?, Phone = ?, DiaChi = ?, GioiTinh = ?, GioiThieu = ? '+hinh+' WHERE idNV = ? ',[
+			loai, ten, change_alias(ten), ngaysinh, phone, diachi, gioitinh,gioithieu,idNV
+		]);
+		req.flash('success_msg','Cập nhật thành công !');
+		res.redirect("/admin/update-nhan-vien/"+idNV);
+	}else{
+		connection.query("SELECT * FROM loainhanvien WHERE idLoaiNV <> 1",function(er,loai){
+			res.render('admin/pages/updateNhanVien',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV, loai : loai, error: error, data: data});
+		});
+	}
+
+})
 
 router.get('/ajax-update-comments/:id/:noidung/:loai',function(req,res){
 	date = new Date();

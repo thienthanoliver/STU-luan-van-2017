@@ -33,30 +33,20 @@
 			<div class="col-lg-6 col-sm-5 wow fadeInUp delay-05s">
             	<div class="form">
                 	
-                    <div id="sendmessage">Your message has been sent. Thank you!</div>
-                    
+                    <br><br>
+                    <h2>Quên Mật Khẩu ?</h2>
                     <form action="" method="post" role="form" class="contactForm">
                     	<br><br><br>
                     	<div class="validation"> <% if(success_msg){ %><%=success_msg%><% } %></div>
                         <div class="form-group">
                             <input type="email" class="form-control input-text" name="email" id="email" placeholder="Your Email" data-rule="email" required/>
-                            <div class="validation"></div>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control input-text" name="password" id="subject" placeholder="Your Password" required />
-                            <div class="validation"></div>
                         </div>
                         
                         <div class="text-center">
-                        	<button type="submit" class="input-btn">Đăng Nhập</button>
+                            <a href="/dang-nhap"><button type="button" class="input-btn"> Quay Lại </button></a>
+                        	<button id="checkmail" type="button" class="input-btn"> Gửi </button>
                         </div>
                         <br>
-                        <div class="text-center">
-                        	<p>Nếu bạn chưa có tài khoản <a href="/dang-ky">Đăng ký</a></p>
-                        </div>
-                        <div class="text-center">
-                        	<p><a href="/quen-mat-khau">Quên mật khẩu ?</a></p>
-                        </div>
                     </form>
                 </div>	
             </div>
@@ -65,3 +55,18 @@
 </div>
 
 <% include ../block/footer %>
+<script>
+    $(document).ready(function() {
+        $('#checkmail').click(function(event) {
+            email = $('#email').val();
+            $.ajax({
+                url: '/ajax-check-email/'+email,
+                type: 'GET'
+            })
+            .done(function(data) {
+                mgs = data == 'error' ? 'Email không đúng !' : ' <h3>Vui lòng truy cập email để xác nhận mật khẩu !</h3>';
+                $('.validation').html(mgs);
+            })
+        });
+    });
+</script>

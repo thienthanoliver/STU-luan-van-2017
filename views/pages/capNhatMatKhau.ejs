@@ -33,33 +33,22 @@
 			<div class="col-lg-6 col-sm-5 wow fadeInUp delay-05s">
             	<div class="form">
                 	
-                    <div id="sendmessage">Your message has been sent. Thank you!</div>
-                    
-                    <form action="" method="post" role="form" id="formDangKy" class="contactForm">
-                    	<br>
-                    	<div class="validation"> <%=msg%></div>
+                    <br><br>
+                    <h2>Nhập mật khẩu mới</h2>
+                    <form action="" method="post" role="form" class="contactForm">
+                    	<br><br><br>
+                    	<div class="validation"> <% if(success_msg){ %><%=success_msg%><% } %></div>
                         <div class="form-group">
-                            <input type="email" class="form-control input-text" value="<%if (typeof Email !== 'undefined') {%><%=Email%><%}%>" name="Email" id="email" placeholder="Your Email" data-rule="email" required/>
-                            <div class="validation"></div>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control input-text" value="<%if (typeof HoTen !== 'undefined') {%><%=HoTen%><%}%>" name="HoTen" placeholder="Your FullName" required/>
-                            <div class="validation"></div>
-                        </div>
-                        <div class="form-group">
-                            <input maxlength=11 type="text" value="<%if (typeof Phone !== 'undefined') {%><%=Phone%><%}%>" class="form-control input-text" onkeypress='return isNumberKey(event)' id="phone" name="Phone" placeholder="Your Number Phone" required/>
-                            <div class="validation" id="valphone"></div>
-                        </div>
-                        <div class="form-group">
-                            <input minlength=6 type="password" class="form-control input-text" id="password" name="Password" id="subject" placeholder="Enter Your Password 6 character" required />
+                            <input minlength=6 type="password" class="form-control input-text" id="password" name="password" id="subject" placeholder="Enter Your Password 6 character" required />
                             <div class="validation"></div>
                         </div>
                         <div class="form-group">
                             <input minlength=6 type="password" class="form-control input-text" id="repassword" name="repassword" id="subject" placeholder="Re Password" required />
                             <div class="validation" id="valrepassword"></div>
                         </div>
+                        
                         <div class="text-center">
-                        	<button onclick=" return dangKySubmit()" type="submit" class="input-btn">Đăng Ký</button>
+                        	<button type="submit" class="input-btn"> Cập Nhật </button>
                         </div>
                         <br>
                     </form>
