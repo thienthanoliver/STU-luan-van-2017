@@ -36,6 +36,11 @@
                   <div class="row">
                   <h2 style="text-align: center;">THÔNG TIN TÀI KHOẢN</h2>
                   </div>
+                  <div>
+                    <% if(success_msg){ %>
+                      <h3 style="color: red"><%=success_msg%></h3>
+                    <% } %>
+                  </div>
                 <form action="" method="POST" enctype="multipart/form-data">
                   <div class="row">
                   	<div class="col-md-3">
@@ -84,6 +89,7 @@
                   		<hr>
                   		<div align="center">
                   			<button id="submit" class="btn btn-success"> Cập Nhật </button>
+                        <a href="/admin/doi-mat-khau"><button type="button" class="btn btn-success"> Đổi mật khẩu </button></a>
                   		</div>
                   		<hr>                  	
                   	</div>

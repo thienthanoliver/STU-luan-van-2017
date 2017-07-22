@@ -1,0 +1,59 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+    <style>
+      tr{
+        height: 50px;
+      }
+    </style>
+<section id="main-content">
+        <section class="wrapper">
+                  <div class="row">
+                  <h2 style="text-align: center;">ĐỔI MẬT KHẨU TÀI KHOẢN</h2>
+                  </div>
+                <form action="" method="POST">
+                  <div class="row">
+                  	<div class="col-md-3">
+                  		<img src="../../images/<%=data.HinhNV%>" alt=""><hr>
+                  	</div>
+                    <div>
+                    <% if(success_msg){ %>
+                      <h3 style="color: red"><%=success_msg%></h3>
+                    <% } %>
+                  </div>
+                  	<div class="col-md-9" style="background: #fafafa">                  	
+                  		<table>
+                  		    <tr style="margin: 2% !important;">
+                  		    	<th style="width: 30;text-align: center;">Mật Khẩu cũ<br><span id="error1" style="color: red">
+                            <%if(typeof error != undefined){%><%=error.er1%><%}%></span></th>
+                  		    	<td style="width: 450px"> <input class="form-control" type="password" name="pass_cu" required> </td>
+                  		    </tr>
+                  			<tr>
+                  		    	<th style="width: 30%;text-align: center;">Mật khẩu mới<br><span id="error2" style="color: red"></span></th>
+                  		    	<td> <input class="form-control" type="password" name="password"  required> </td>
+                  		    </tr>
+                  		    <tr>
+                  		    	<th style="width: 30%;text-align: center;">Nhập lại mật khẩu <br><span id="error3" style="color: red">
+                           <%if(typeof error != undefined){%><%=error.er2%><%}%>   
+                            </span></th>
+                  		    	<td> <input class="form-control" type="password" name="repassword" required> </td>
+                  		    </tr>
+                  		    <tr>
+                  		</table>
+                  		<hr>
+                  		<div align="center">
+                        <a href="/admin/tai-khoan/1212"><button type="button" class="btn btn-success"> Quay lại </button></a>
+                  			<button id="submit" class="btn btn-success"> Cập Nhật </button>
+                  		</div>
+                  		<hr>                  	
+                  	</div>
+                  </div>
+                 </form>
+        </section>
+</section>
+
+
+<% include ../../admin/block/footer %>

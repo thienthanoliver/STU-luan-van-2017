@@ -1043,6 +1043,45 @@ router.get('/ajax-update-comments/:id/:noidung/:loai',function(req,res){
 	}
 })
 
+router.get('/doi-mat-khau',function(req,res,next){
+	if(!req.session.idNV){
+		res.redirect("/admin/dang-nhap");
+	} 
+	error = {};
+	connection.query('SELECT * FROM nhanvien WHERE idNV = ?',[req.session.idNV],function(er,data){
+		res.render('admin/pages/doiMatKhau',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV,data: data[0], idNV : req.session.idNV, error : error});
+	})
+})
+
+router.post('/doi-mat-khau',function(req,res,next){
+	if(!req.session.idNV){
+		res.redirect("/admin/dang-nhap");
+	} 
+	check = true;
+	error = {};
+	connection.query('SELECT * FROM nhanvien WHERE idNV = ? AND MatKhau = SHA1(?)',[req.session.idNV, req.body.pass_cu],function(er,data){
+		if(typeof data[0] == 'undefined'){
+			check = false;
+			error.er1 = "Mật khẩu cũ không đúng !";
+		}
+		if( req.body.password != req.body.repassword ){
+			check = false;
+			error.er2 = "Mật khẩu nhập lại không đúng !";	
+		}
+
+		if(check == true){
+			connection.query("UPDATE nhanVien SET MatKhau = SHA1(?) WHERE idNV = ?", [req.body.password, req.session.idNV]);
+			req.flash('success_msg','Cập nhật thành công !');
+			res.redirect("/admin/tai-khoan/12345678765432");
+		} else {
+			connection.query('SELECT * FROM nhanvien WHERE idNV = ?',[req.session.idNV],function(er,data){
+				res.render('admin/pages/doiMatKhau',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV,data: data[0], idNV : req.session.idNV, error : error});
+			})
+		}
+		
+	})
+})
+
 router.get('/AJAX-sadjshagdsakjgdsadgasdgsakdhsadask/:id',function(req,res){
 	connection.query("UPDATE chitietmua SET TrangThai = 1 WHERE idchitiet = ?",
 		[req.params.id]);
