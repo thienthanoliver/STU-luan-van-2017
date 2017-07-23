@@ -241,11 +241,11 @@ router.post('/ket-qua-thi-trac-nghiem/:id',function(req, res, next){
         })
       })
       req.session.diemTN = diem+"/"+tongcau;
-      connection.query("SELECT (CASE WHEN DiemTN > '"+diem+"/"+tongcau+"' THEN 1 ELSE 0 END) AS Diem FROM `diemtracnghiem` WHERE idTracNghiem = ?",
-        [req.params.id],function(er,sosanh){
+      connection.query("SELECT (CASE WHEN DiemTN > '"+diem+"/"+tongcau+"' THEN 1 ELSE 0 END) AS Diem, DiemTN FROM `diemtracnghiem` WHERE idTracNghiem = ? AND idUser = ?",
+        [req.params.id,req.session.idUser],function(er,sosanh){
           if(sosanh[0].Diem == 1){
             res.send("ok");
-          } else {
+          } else if(sosanh[0].DiemTN == 0 || sosanh[0].Diem == 0) {
             connection.query("UPDATE diemtracnghiem SET DiemTN = ? , NgayThiTN = ? WHERE idTracNghiem = ? AND idUser = ?",
               [diem+'/'+tongcau,date,req.params.id,req.session.idUser],function(sad,asdsd){
                 res.send("ok");
@@ -497,7 +497,14 @@ router.get('/mua-bai-giang/:id',function(req,res){
   }
   req.session.idUser = req.session.idUser ? req.session.idUser : 0;
   connection.query("SELECT * FROM baiviet join nhanvien on nhanvien.idNV = baiviet.idNV WHERE idBaiViet = ?",[req.params.id],function(er,data){
-    res.render("pages/muaBaiGiang",{'login' : req.session.idUser,data : data});
+    connection.query("SELECT * FROM tracnghiem WHERE idBaiViet = ? ",[req.params.id], function(er,tracnghiem){
+
+      if(typeof tracnghiem[0] == 'undefined'){
+        tracnghiem = 0;
+      }
+
+      res.render("pages/muaBaiGiang",{'login' : req.session.idUser,data : data,tracnghiem: tracnghiem});
+    });
   });
 });
 
@@ -505,10 +512,20 @@ router.post('/mua-bai-giang/:id',function(req,res){
   date = new Date();
   date = dateFormat(date,"yyyy-mm-dd")
   code = req.body.code ? req.body.code : 0;
+  idTracNghiem = req.body.idTracNghiem ? req.body.idTracNghiem : [];
   connection.query("INSERT INTO mua VALUES (null,?,?,?,?,?,?,?)", 
       [req.session.idUser,req.body.ten,req.body.email,req.body.diachi,req.body.phone,req.body.cmnd,code],function(er,data){
           connection.query("INSERT INTO chitietmua VALUES(null,?,?,?,?,?,?,?)",
             [data.insertId,req.body.idBaiViet,0,0,date,req.body.gia,0]);
+            if(typeof idTracNghiem[0] != 'undefined'){
+              idTracNghiem.forEach(function(val,key){
+                connection.query("SELECT * FROM tracnghiem WHERE idTracNghiem = ?", [val],function(err,tracnghiem){
+                    connection.query("INSERT INTO chitietmua VALUES(null,?,?,?,?,?,?,?)",
+                      [data.insertId,0,0,tracnghiem[0].idTracNghiem,date,tracnghiem[0].Gia,0]);
+                      connection.query("INSERT INTO diemtracnghiem VALUES(null,?,?,?,?)",[req.session.idUser,tracnghiem[0].idTracNghiem,0,date]);
+                });
+              })
+            }
             req.flash('success_msg',' Yêu cầu đăng ký của bạn đã được gởi. Bạn cần chuyển chi phí cho chúng tôi theo thông tin dưới đây để hoàn tất việc tham gia khóa học. !');
             res.redirect('/mua-bai-giang/'+req.body.idBaiViet);
       })
@@ -518,13 +535,49 @@ router.get('/tai-khoan',function(req,res){
   if(!req.session.idUser){
     res.redirect('/dang-nhap');
   } else {
+
+    arrayInfo = [];
+
     connection.query("SELECT * FROM user WHERE idUser = "+req.session.idUser,function(er,data){
       connection.query("SELECT * FROM mua JOIN chitietmua ct ON ct.idMua = mua.idMua join baiviet b on b.idBaiViet = ct.idBaiViet WHERE idUser ="+data[0].idUser,function(e,v){
         v = v[0] ? v : 0 ;
-        connection.query("SELECT * FROM diemtracnghiem d join tracnghiem t on t.idTracNghiem = d.idTracNghiem join chitietmua ct on ct.idTracNghiem = d.idTracNghiem WHERE d.idUser = ?",
+        connection.query("SELECT * FROM diemtracnghiem d join tracnghiem t on t.idTracNghiem = d.idTracNghiem join chitietmua ct on ct.idTracNghiem = d.idTracNghiem WHERE d.idUser = ? GROUP BY idDiemTN",
           [req.session.idUser],function(er,tracnghiem){
             tracnghiem = tracnghiem[0] ? tracnghiem : 0;
-            res.render("pages/taiKhoan",{'login' : req.session.idUser,data : data, mua : v, tracnghiem : tracnghiem});
+
+            if(tracnghiem != 0){
+              connection.query("SELECT * FROM diemtracnghiem d JOIN tracnghiem t on t.idTracNghiem = d.idTracNghiem JOIN baiviet b on b.idBaiViet = t.idBaiViet WHERE idUser = ? AND diemTN <> 0", [req.session.idUser],function(er,results){
+                results.forEach(function(val,key){
+                  arrayInfo.push({
+                    idBaiViet : val.idBaiViet,
+                    idTracNghiem : val.idTracNghiem,
+                    DiemTN : val.DiemTN,
+                    NgayThiTN : val.NgayThiTN,
+                    TenBaiViet : val.TenBaiViet
+                  });
+                });    
+                arrayInfo.forEach(function(val,key){
+                  diem = val.DiemTN.split("/");
+                  diem = (diem[0]/diem[1])*100;
+                  arrayInfo[key].DiemTN = diem;
+                })
+
+                arrayInfo.forEach(function(val,key){
+                  if(typeof arrayInfo[(key+1)] != 'undefined' ){
+                    if(arrayInfo[key].idBaiViet == arrayInfo[(key+1)].idBaiViet){
+                      arrayInfo[key].DiemTN = (arrayInfo[key].DiemTN + arrayInfo[(key+1)].DiemTN)/2;
+                      arrayInfo.splice((key+1), 1);
+                    }
+                  }
+                })
+                
+
+                console.log(arrayInfo)
+                res.render("pages/taiKhoan",{'login' : req.session.idUser,data : data, mua : v, tracnghiem : tracnghiem, arrayInfo : arrayInfo}); 
+              });
+            } else {
+              res.render("pages/taiKhoan",{'login' : req.session.idUser,data : data, mua : v, tracnghiem : tracnghiem, arrayInfo : 0});
+            }
           });
       });
     });

@@ -13,8 +13,8 @@
             <% } %>
             <pre style="text-align:center; width : 40%; margin: auto"> Chủ Tài Khoản : NGUYỄN QUỐC BẢO <br> Số Tài Khoản : 4214 9456 0902 7254 <br> Ngân Hàng: ACB – Chi Nhánh Bảo Lộc - Lâm Đồng </pre>
             <hr>
-            <div class="col-md-4">
-                <h3>Thông tin bài giảng</h3><hr>
+            <div class="col-md-5">
+                <h3 style="text-align: center;">Thông tin bài giảng</h3><hr>
                 <strong>Tên Bài Giảng</strong>
                 <input class="form-control" type="text" value="<%=data[0].TenBaiViet%>" disabled>
                 <strong>Giá Tiền</strong>
@@ -24,8 +24,34 @@
                 <input type="hidden" name="idBaiViet" value="<%=data[0].idBaiViet%>">
                 <input type="hidden" name="gia" value="<%=data[0].Gia%>">
             </div>
-            <div class="col-md-8">
-                <h3>Thông tin khách hàng</h3><hr>
+            <% if (tracnghiem != 0) { -%>
+                <h3 style="text-align: center;">Bao gồm các bài trắc nghiệm sau !</h3><hr>
+                <div class="col-md-1"></div>
+                <div class="col-md-6">
+                    <table class="table table-hover">
+                        <tr>
+                            <th width="100px"> STT </th>
+                            <th> Tiêu đề trắc nghiệm </th>
+                        </tr>
+                        <%tracnghiem.forEach(function(val,key){%>
+                            <tr>
+                                <td> <%=(key+1)%> </td>
+                                <td> <%=val.TieuDeTN%> </td>
+                            </tr>
+                            <input type="hidden" name="idTracNghiem[]" value="<%=val.idTracNghiem%>">
+                        <%})%>
+                    </table>
+                </div>
+            <% } else { -%>
+                <h3 style="text-align: center;">Bài giảng này chưa có trắc nghiệm !</h3><hr>
+            <% } -%>
+            
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <h3 style="text-align: center;">Thông tin khách hàng</h3><hr>
                 <div class="col-md-6">
                     <strong>Tên Khách Hàng</strong>
                     <input name="ten" class="form-control" required="required">
