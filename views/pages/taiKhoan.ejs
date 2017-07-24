@@ -62,7 +62,13 @@
                         <%mua.forEach(function(val,key){%>
                             <tr>
                                 <td><%=(key+1)%></td>
-                                <td> <%=val.TenBaiViet%> </td>
+                                <td>
+                                <%if(val.TrangThai == 1){%>
+                                    <a href="/bai-giang/<%=val.Alias%>/<%=val.idBaiViet%>"><%=val.TenBaiViet%></a>
+                                <%}else{%> 
+                                    <%=val.TenBaiViet%> 
+                                <%}%>
+                                </td>
                                 <td>
                                 <%if(val.TrangThai == 1){%>
                                     <span class="btn btn-success disabled"> đã thanh toán </span>

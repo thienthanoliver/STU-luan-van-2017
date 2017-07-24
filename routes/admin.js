@@ -765,7 +765,7 @@ router.get('/thong-ke/hoc-vien',function(req,res){
 	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV, idNV : req.session.idNV});
 	}
-	ten = req.query.ten ? "'%"+req.query.ten+"%'" : "'% %'"; query = "";
+	ten = req.query.ten ? "'%"+req.query.ten+"%'" : "'%%'"; query = "";
 	if(req.query.sapxep == 1){
 		query += " DESC ";	
 	}
