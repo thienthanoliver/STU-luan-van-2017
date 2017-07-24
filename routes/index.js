@@ -210,17 +210,17 @@ router.get('/thi-trac-nghiem/:id',function(req, res, next){
     }
     req.session.idUser = req.session.idUser ? req.session.idUser : 0;
     id = req.params.id;
-    connection.query("SELECT t.*, SHA1(t.idTracNghiem) as maTN FROM tracnghiem as t", function(error, results, fields){
-        results.forEach(function(val,key){
-          if(val.maTN == id){
-            thoigian = val.ThoiGian * 60;
-            connection.query('select * from tracnghiemchitiet where idTracNghiem = ? ORDER BY RAND() ',[val.idTracNghiem],function(error, values, fields){
-              connection.query('select * from tracnghiemtraloi ORDER BY RAND() ',function(er,traloi){
-                res.render('pages/pageThiTracNghiem',{'login' : req.session.idUser,msg : "", data : values , thoigian : thoigian, traloi : traloi});
-              })
-            });
-          }
-        })
+    connection.query("SELECT t.*, SHA1(t.idTracNghiem) as maTN FROM tracnghiem as t WHERE SHA1(t.idTracNghiem) = ?",[id], function(error, results, fields){
+      if(typeof results[0] != 'undefined' ){
+        thoigian = results[0].ThoiGian * 60;
+        connection.query('select * from tracnghiemchitiet where idTracNghiem = ? ORDER BY RAND() ',[results[0].idTracNghiem],function(error, values, fields){
+          connection.query('select * from tracnghiemtraloi ORDER BY RAND() ',function(er,traloi){
+            res.render('pages/pageThiTracNghiem',{'login' : req.session.idUser,msg : "", data : values , thoigian : thoigian, traloi : traloi});
+          })
+        });
+      } else {
+        res.redirect('/tai-khoan');
+      } 
     });
 });
 
@@ -541,7 +541,7 @@ router.get('/tai-khoan',function(req,res){
     connection.query("SELECT * FROM user WHERE idUser = "+req.session.idUser,function(er,data){
       connection.query("SELECT * FROM mua JOIN chitietmua ct ON ct.idMua = mua.idMua join baiviet b on b.idBaiViet = ct.idBaiViet WHERE idUser ="+data[0].idUser,function(e,v){
         v = v[0] ? v : 0 ;
-        connection.query("SELECT * FROM diemtracnghiem d join tracnghiem t on t.idTracNghiem = d.idTracNghiem join chitietmua ct on ct.idTracNghiem = d.idTracNghiem join mua m on m.idMua = ct.idMua WHERE d.idUser = ? AND m.idUser = ? GROUP BY idDiemTN",
+        connection.query("SELECT t.*,d.*,ct.*,m.*, SHA1(t.idTracNghiem) as idSHA1 FROM diemtracnghiem d join tracnghiem t on t.idTracNghiem = d.idTracNghiem join chitietmua ct on ct.idTracNghiem = d.idTracNghiem join mua m on m.idMua = ct.idMua WHERE d.idUser = ? AND m.idUser = ? GROUP BY idDiemTN",
           [req.session.idUser,req.session.idUser],function(er,tracnghiem){
             tracnghiem = tracnghiem[0] ? tracnghiem : 0;
 

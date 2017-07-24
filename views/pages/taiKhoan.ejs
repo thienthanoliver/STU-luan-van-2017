@@ -96,7 +96,13 @@
                     <%tracnghiem.forEach(function(val,key){%>
                         <tr>
                             <td><%=(key+1)%></td>
-                            <td> <%=val.TieuDeTN%> </td>
+                            <td> 
+                                <%if(val.TrangThai == 1){%>
+                                    <a href="/thi-trac-nghiem/<%=val.idSHA1%>"><%=val.TieuDeTN%> </a>
+                                <%}else{%>
+                                    <%=val.TieuDeTN%> 
+                                <%}%>
+                            </td>
                             <td> <%if(val.DiemTN != 0){%> <%=val.DiemTN%> <%}%> </td>
                             <td>
                                 <%if(val.TrangThai == 1){%>
