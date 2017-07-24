@@ -541,8 +541,8 @@ router.get('/tai-khoan',function(req,res){
     connection.query("SELECT * FROM user WHERE idUser = "+req.session.idUser,function(er,data){
       connection.query("SELECT * FROM mua JOIN chitietmua ct ON ct.idMua = mua.idMua join baiviet b on b.idBaiViet = ct.idBaiViet WHERE idUser ="+data[0].idUser,function(e,v){
         v = v[0] ? v : 0 ;
-        connection.query("SELECT * FROM diemtracnghiem d join tracnghiem t on t.idTracNghiem = d.idTracNghiem join chitietmua ct on ct.idTracNghiem = d.idTracNghiem WHERE d.idUser = ? GROUP BY idDiemTN",
-          [req.session.idUser],function(er,tracnghiem){
+        connection.query("SELECT * FROM diemtracnghiem d join tracnghiem t on t.idTracNghiem = d.idTracNghiem join chitietmua ct on ct.idTracNghiem = d.idTracNghiem join mua m on m.idMua = ct.idMua WHERE d.idUser = ? AND m.idUser = ? GROUP BY idDiemTN",
+          [req.session.idUser,req.session.idUser],function(er,tracnghiem){
             tracnghiem = tracnghiem[0] ? tracnghiem : 0;
 
             if(tracnghiem != 0){
