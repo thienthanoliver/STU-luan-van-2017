@@ -1,0 +1,83 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+<section id="main-content">
+        <section class="wrapper">
+          <div class="row">
+          <h2 style="text-align: center;"> THÔNG TIN </h2>
+          </div>
+
+          <div class="row">
+          	<div class="col-md-3" style="text-align: center;">
+          		<img src="../../images/<%=giangvien.HinhNV%>" width="50%" alt=""><hr>	
+              <strong style="color: red">Lượt xem : </strong>
+              <%
+                totalView = 0;
+                baiviet.forEach(function(val,key){
+                  totalView += val.LuotXem;
+                })
+              %>
+              <%=totalView%>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <strong style="color: blue">Điểm :</strong>
+              <%
+                totalView = 0;
+                baiviet.forEach(function(val,key){
+                  totalView += val.Diem;
+                })
+              %>
+              <%=totalView%>
+          	</div>
+
+          	<div class="col-md-4">
+          		<h3> <%=giangvien.HoTen%> </h3>
+          		<p> <strong>Email</strong>  : <%=giangvien.Email%> </p>
+          		<p> <strong>Phone :</strong>  <%=giangvien.Phone%> </p>
+          		<p> <strong>Ngày Sinh</strong> :<%=giangvien.NgaySinh%> </p>
+          		<p> <strong>Địa Chỉ</strong>: <%=giangvien.DiaChi%> </p>
+              <p> <strong>Giới Thiệu</strong> : <%=giangvien.GioiThieu%> </p>
+          	</div>
+          </div>
+
+          <div class="row">
+            <h2 style="text-align: center;"> DANH SÁCH BÀI VIẾT </h2>
+
+            <table class="table table-hover">
+              <tr>
+                <th> STT </th>
+                <th> Tên bài viết </th>
+                <th> Tên bài trắc nghiệm </th>
+                <th> Khóa học </th>
+                <th> Lượt xem </th>
+                <th> Đánh Giá </th>
+              </tr>
+              <% if (typeof baiviet[0] != 'undefined') { -%>
+                <%baiviet.forEach(function(val,key){%>
+                  <tr>
+                    <td><%=(key+1)%></td>
+                    <td><%=val.TenBaiViet%></td>
+                    <td>
+                      <%tracnghiem.forEach(function(v,k){%>
+                        <%if(v.idBaiViet == val.idBaiViet){%>
+                          <li><%=v.TieuDeTN%></li>
+                        <%}%>
+                      <%})%>
+                    </td>
+                    <td><%=val.TenKhoaHoc%></td>
+                    <td><%=val.LuotXem%></td>
+                    <td><%=val.Diem%></td>
+                  </tr>
+                <%})%>
+              <% } else { -%>
+                <tr> <th colspan="6" style="text-align: center;">Chưa có bài viết nào !</th> </tr>
+              <% } -%>
+            </table>
+          </div>
+                 
+        </section>
+</section>
+
+<% include ../../admin/block/footer %>

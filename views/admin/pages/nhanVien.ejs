@@ -34,7 +34,13 @@
                               %>
                                 <tr>
                                    <td><img width="150px" src="/images/<%=val.HinhNV%>"></td> 
-                                   <td><strong><%=val.HoTen %></strong></td>
+                                   <td>
+                                   <% if (list=='HỌC VIÊN') { -%>
+                                     <a href="/admin/thong-tin-hoc-vien/<%=val.idUser%>"><strong><%=val.HoTen %></strong></a>
+                                   <% } else { -%>
+                                     <a href="/admin/thong-tin-giang-vien/<%=val.idNV%>"><strong><%=val.HoTen %></strong></a>
+                                   <% } -%>
+                                   </td>
                                    <td><%=val.Email %></td>
                                    <td><%=val.NgaySinh.toDateString() %></td>
                                    <td><%=val.Phone %></td>

@@ -58,7 +58,9 @@
                             <%data.forEach(function(val,key){%>
                               <tr>
                                 <td><%=(key+1)%></td>
-                                <td><%=val.HoTen%></td>
+                                <td>
+                                  <a href="/admin/thong-tin-hoc-vien/<%=val.idUser%>"><%=val.HoTen%></a>
+                                </td>
                                 <td><%=val.Email%></td>
                                 <td><%=val.Phone%></td>
                                 <td>

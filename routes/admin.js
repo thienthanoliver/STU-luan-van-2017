@@ -1088,4 +1088,70 @@ router.get('/AJAX-sadjshagdsakjgdsadgasdgsakdhsadask/:id',function(req,res){
 	res.send("ok");
 });
 
+router.get('/thong-tin-hoc-vien/:id',function(req,res){
+	if(!req.session.idNV){
+		res.redirect("/admin/dang-nhap");
+	} else {
+		arrayInfo = [];
+
+    connection.query("SELECT * FROM user WHERE idUser = "+req.params.id,function(er,data){
+    	data[0].NgaySinh = dateFormat(data[0].NgaySinh,'dd-mm-yyyy');
+      connection.query("SELECT * FROM mua JOIN chitietmua ct ON ct.idMua = mua.idMua join baiviet b on b.idBaiViet = ct.idBaiViet WHERE idUser ="+data[0].idUser,function(e,v){
+        v = v[0] ? v : 0 ;
+	        connection.query("SELECT t.*,d.*,ct.*,m.*, SHA1(t.idTracNghiem) as idSHA1 FROM diemtracnghiem d join tracnghiem t on t.idTracNghiem = d.idTracNghiem join chitietmua ct on ct.idTracNghiem = d.idTracNghiem join mua m on m.idMua = ct.idMua WHERE d.idUser = ? AND m.idUser = ? GROUP BY idDiemTN",
+	          [req.params.id,req.params.id],function(er,tracnghiem){
+	            tracnghiem = tracnghiem[0] ? tracnghiem : 0;
+
+	            if(tracnghiem != 0){
+	              connection.query("SELECT * FROM diemtracnghiem d JOIN tracnghiem t on t.idTracNghiem = d.idTracNghiem JOIN baiviet b on b.idBaiViet = t.idBaiViet WHERE idUser = ? AND diemTN <> 0", [req.params.id],function(er,results){
+	                results.forEach(function(val,key){
+	                  arrayInfo.push({
+	                    idBaiViet : val.idBaiViet,
+	                    idTracNghiem : val.idTracNghiem,
+	                    DiemTN : val.DiemTN,
+	                    NgayThiTN : val.NgayThiTN,
+	                    TenBaiViet : val.TenBaiViet
+	                  });
+	                });    
+	                arrayInfo.forEach(function(val,key){
+	                  diem = val.DiemTN.split("/");
+	                  diem = (diem[0]/diem[1])*100;
+	                  arrayInfo[key].DiemTN = diem;
+	                })
+
+	                arrayInfo.forEach(function(val,key){
+	                  if(typeof arrayInfo[(key+1)] != 'undefined' ){
+	                    if(arrayInfo[key].idBaiViet == arrayInfo[(key+1)].idBaiViet){
+	                      arrayInfo[key].DiemTN = (arrayInfo[key].DiemTN + arrayInfo[(key+1)].DiemTN)/2;
+	                      arrayInfo.splice((key+1), 1);
+	                    }
+	                  }
+	                })
+	                
+
+	                res.render("admin/pages/taiKhoanHocVien",{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV,idNV : req.session.idNV,data : data[0], mua : v, tracnghiem : tracnghiem, arrayInfo : arrayInfo}); 
+	              });
+	            } else {
+	              res.render("admin/pages/taiKhoanHocVien",{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV,idNV : req.session.idNV,data : data[0], mua : v, tracnghiem : tracnghiem, arrayInfo : 0});
+	            }
+	          });
+	      });
+	    });
+	}
+});
+
+router.get('/thong-tin-giang-vien/:id',function(req,res){
+	if(!req.session.idNV){
+		res.redirect("/admin/dang-nhap");
+	} else {
+		connection.query("SELECT * FROM nhanvien nv WHERE nv.idNV = ? ",[req.params.id],function(er,giangvien){
+			giangvien[0].NgaySinh = dateFormat(giangvien[0].NgaySinh,'dd-mm-yyyy');
+			connection.query("SELECT bv.idBaiViet,bv.idBaiViet,bv.TenBaiViet, kh.TenKhoaHoc ,bv.LuotXem, IFNULL(dg.Diem,0) as Diem FROM baiviet bv JOIN khoahoc kh ON kh.idKhoaHoc = bv.idKhoaHoc LEFT JOIN danhgia dg ON dg.idBaiViet = bv.idBaiViet WHERE bv.idNV = ?",[req.params.id], function(er,baiviet){	
+				connection.query("SELECT * FROM tracnghiem WHERE idNV = ?",[req.params.id], function(er, tracnghiem){
+					res.render("admin/pages/taiKhoanGiangVien",{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV,idNV : req.session.idNV,tracnghiem: tracnghiem, giangvien : giangvien[0],baiviet: baiviet});
+				});							
+			});
+		});
+	}
+});
 module.exports = router;

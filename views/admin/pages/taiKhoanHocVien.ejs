@@ -1,0 +1,132 @@
+<% include ../../admin/block/head %>
+  <!-- container section start -->
+
+    <% include ../../admin/block/header %>
+
+    <% include ../../admin/block/menuLeft %>
+<section id="main-content">
+        <section class="wrapper">
+                  <div class="row">
+                  <h2 style="text-align: center;"> THÔNG TIN HỌC VIÊN </h2>
+                  </div>
+
+                  <div class="row">
+                  	<div class="col-md-3" style="text-align: center;">
+                  		<img src="../../images/user.png" alt=""><hr>	
+                  	</div>
+
+                  	<div class="col-md-4">
+                  		<h3> <%=data.HoTen%> </h3>
+                  		<p> Email : <%=data.Email%> </p>
+                  		<p> Phone : <%=data.Phone%> </p>
+                  		<p> Ngày Sinh :<%=data.NgaySinh%> </p>
+                  		<p> Địa Chỉ: <%=data.DiaChi%> </p>
+                  	</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-1"></div>
+                  	<div class="col-md-7">
+		                <h3 style="text-align: center;"> Danh sách kết quả ! </h3>
+		                <% if (arrayInfo != 0) { -%>
+		                    <table class="table table-hover">
+		                        <tr>
+		                            <th> STT </th>
+		                            <th> Tên Bài Học </th>
+		                            <th> Điểm </th>
+		                            <th> Kết quả </th>
+		                        </tr>
+		                        <%arrayInfo.forEach(function(val,key){%>
+		                            <tr>
+		                                <td> <%=(key+1)%> </td>
+		                                <td> <%=val.TenBaiViet%> </td>
+		                                <td> <%=Math.round(val.DiemTN/10)%> </td>
+		                                <td>
+		                                    <%if(Math.round(val.DiemTN/10) > 5){%>
+		                                       <strong style="color: green">Đậu</strong>
+		                                    <%}else{%>
+		                                       <strong style="color: red">Rớt</strong>
+		                                    <%}%>
+		                                </td>
+		                            </tr>
+		                        <%})%>
+		                    </table>
+		                <% } -%>
+		            </div>
+                  </div>
+
+                  <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>CÁC KHOÁ HỌC ĐÃ ĐĂNG KÝ</h4>
+                <%if(mua==0){%>
+                    <pre>Bạn chưa đăng ký khoá học nào !</pre>
+                <%} else {%>
+                    <table class="table table-hover">
+                        <tr>
+                            <th width="40px">STT</th>
+                            <th> Bài Giảng </th>
+                            <th width="90px">Status</th>
+                        </tr>
+                        <%mua.forEach(function(val,key){%>
+                            <tr>
+                                <td><%=(key+1)%></td>
+                                <td>
+                                <%if(val.TrangThai == 1){%>
+                                    <a href="/bai-giang/<%=val.Alias%>/<%=val.idBaiViet%>"><%=val.TenBaiViet%></a>
+                                <%}else{%> 
+                                    <%=val.TenBaiViet%> 
+                                <%}%>
+                                </td>
+                                <td>
+                                <%if(val.TrangThai == 1){%>
+                                    <span class="btn btn-success disabled"> đã thanh toán </span>
+                                <%} else {%>
+                                    <span class="btn btn-warning disabled"> đang chờ !!! </span>
+                                <%}%>
+                                </td>
+                            </tr>
+                        <%})%>
+                    </table>
+                <%}%>
+            </div>
+            <div class="col-md-6">
+                <h4> TRẮC NGHIỆM </h4>
+                <%if(tracnghiem == 0){%>
+                    <pre>Bạn chưa có bài trắc nghiệm nào !</pre>
+                <%} else {%>
+                    <table class="table table-hover">
+                        <tr>
+                            <th width="40px">STT</th>
+                            <th> Trắc Nghiệm </th>
+                            <th> Điểm </th>
+                            <th>Status</th>
+                        </tr>
+                    <%tracnghiem.forEach(function(val,key){%>
+                        <tr>
+                            <td><%=(key+1)%></td>
+                            <td> 
+                                <%if(val.TrangThai == 1){%>
+                                    <a href="/thi-trac-nghiem/<%=val.idSHA1%>"><%=val.TieuDeTN%> </a>
+                                <%}else{%>
+                                    <%=val.TieuDeTN%> 
+                                <%}%>
+                            </td>
+                            <td> <%if(val.DiemTN != 0){%> <%=val.DiemTN%> <%}%> </td>
+                            <td>
+                                <%if(val.TrangThai == 1){%>
+                                    <span class="btn btn-success disabled"> đã thanh toán </span>
+                                <%} else {%>
+                                    <span class="btn btn-warning disabled"> đang chờ !!! </span>
+                                <%}%>
+                            </td>
+                        </tr>
+                    <%})%>
+                    </table>
+                <%}%>
+            </div>
+        </div>
+        </section>
+</section>
+
+<% include ../../admin/block/footer %>
