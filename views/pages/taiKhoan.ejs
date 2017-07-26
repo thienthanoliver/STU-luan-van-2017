@@ -49,7 +49,7 @@
         <hr>
         <div class="row">
             <div class="col-md-6">
-                <h4>CÁC KHOÁ HỌC ĐÃ ĐĂNG KÝ</h4>
+                <h4>CÁC BÀI HỌC ĐÃ ĐĂNG KÝ</h4>
                 <%if(mua==0){%>
                     <pre>Bạn chưa đăng ký khoá học nào !</pre>
                 <%} else {%>
@@ -63,17 +63,19 @@
                             <tr>
                                 <td><%=(key+1)%></td>
                                 <td>
-                                <%if(val.TrangThai == 1){%>
+                                <%if(val.TrangThai == 3){%>
                                     <a href="/bai-giang/<%=val.Alias%>/<%=val.idBaiViet%>"><%=val.TenBaiViet%></a>
                                 <%}else{%> 
                                     <%=val.TenBaiViet%> 
                                 <%}%>
                                 </td>
                                 <td>
-                                <%if(val.TrangThai == 1){%>
+                                <%if(val.TrangThai == 3){%>
                                     <span class="btn btn-success disabled"> đã thanh toán </span>
-                                <%} else {%>
+                                <%} if(val.TrangThai == 0) {%>
                                     <span class="btn btn-warning disabled"> đang chờ !!! </span>
+                                <%} if(val.TrangThai == 1) {%>
+                                    <span class="btn btn-danger disabled"> Bị Hủy !!! </span>
                                 <%}%>
                                 </td>
                             </tr>
@@ -97,7 +99,7 @@
                         <tr>
                             <td><%=(key+1)%></td>
                             <td> 
-                                <%if(val.TrangThai == 1){%>
+                                <%if(val.TrangThai == 3){%>
                                     <a href="/thi-trac-nghiem/<%=val.idSHA1%>"><%=val.TieuDeTN%> </a>
                                 <%}else{%>
                                     <%=val.TieuDeTN%> 
@@ -105,10 +107,12 @@
                             </td>
                             <td> <%if(val.DiemTN != 0){%> <%=val.DiemTN%> <%}%> </td>
                             <td>
-                                <%if(val.TrangThai == 1){%>
+                                <%if(val.TrangThai == 3){%>
                                     <span class="btn btn-success disabled"> đã thanh toán </span>
-                                <%} else {%>
+                                <%} if(val.TrangThai == 0) {%>
                                     <span class="btn btn-warning disabled"> đang chờ !!! </span>
+                                <%} if(val.TrangThai == 1) {%>
+                                    <span class="btn btn-danger disabled"> Bị Hủy !!! </span>
                                 <%}%>
                             </td>
                         </tr>

@@ -393,7 +393,7 @@ router.post('/trac-nghiem-file/dang-bai-trac-nghiem/file',function(req, res, nex
         });
         }
     });
-  res.redirect('/admin/trac-nghiem');
+  res.redirect('http://localhost:3000/admin/trac-nghiem');
 });
 
 

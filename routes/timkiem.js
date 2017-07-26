@@ -18,12 +18,12 @@ router.get('/',function(req, res, next){
 	ten = "%"+ten+"%";
 	gia = req.query.gia ? req.query.gia : 0;
 	theloai = req.query.theloai ? req.query.theloai : 0;
-	query = "";
+	query = " ORDER BY bv.Gia ASC";
 	if(theloai == 2){
-		query += " ORDER BY bv.LuotXem DESC "
+		query = " ORDER BY bv.LuotXem DESC "
 	}
 	if(theloai == 1){
-		query += " ORDER BY d.Diem DESC "
+		query = " ORDER BY d.Diem DESC "
 	}
 	req.session.idUser = req.session.idUser ? req.session.idUser : 0;
 	a = connection.query('SELECT bv.*,nv.*,k.*,d.Diem,d.SoNguoiDG FROM baiviet bv LEFT JOIN nhanvien nv ON nv.idNV = bv.idNV LEFT JOIN khoahoc k ON k.idKhoaHoc = bv.idKhoaHoc LEFT JOIN danhgia d ON d.idBaiViet = bv.idBaiViet WHERE (bv.TenBaiViet LIKE ? OR nv.HoTen LIKE ? ) AND bv.Gia >= ? '+query,[ten,ten,gia],function(er,timkiem){
@@ -40,8 +40,8 @@ router.get('/',function(req, res, next){
 	          } else if(timkiem[0]) {
 	              timkiem.forEach(function(val,key){
 	                mua.forEach(function(v,k){
-	                  if(v.idBaiViet == val.idBaiViet && v.TrangThai == 1){
-	                    val.trangthaimua = 2;
+	                  if(v.idBaiViet == val.idBaiViet && v.TrangThai == 3){
+	                    val.trangthaimua = 3;
 	                  }
 	                  if(v.idBaiViet == val.idBaiViet && v.TrangThai == 0){
 	                    val.trangthaimua = 1;

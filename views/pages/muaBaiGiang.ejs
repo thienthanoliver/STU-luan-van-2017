@@ -7,11 +7,11 @@
 		<div class="row">
             <br>
 			<h2> Thông tin giao dịch </h2>
-            <p>Để tham gia vào khóa học, bạn cần gởi thông tin cho chúng tôi theo form thông tin tại đây. Sau đó, gởi học phí  tài khoản bên dưới với thông tin xác nhận như hướng dẫn:</p>
+            <p style="color: red">Để tham gia vào khóa học, bạn cần gởi thông tin cho chúng tôi theo form thông tin tại đây. Sau đó, gởi học phí  tài khoản bên dưới với thông tin xác nhận như hướng dẫn:</p>
             <% if(success_msg){ %>
                 <h4 style="color: red" align="center"><%=success_msg%></h4>
             <% } %>
-            <pre style="text-align:center; width : 40%; margin: auto"> Chủ Tài Khoản : NGUYỄN QUỐC BẢO <br> Số Tài Khoản : 4214 9456 0902 7254 <br> Ngân Hàng: ACB – Chi Nhánh Bảo Lộc - Lâm Đồng </pre>
+            <pre style="text-align:center; width : 40%; margin: auto"> Chủ Tài Khoản : NGUYỄN QUỐC BẢO <br> Số Tài Khoản : 4214 9456 0902 7254 <br> Ngân Hàng: ACB – Chi Nhánh Bảo Lộc - Lâm Đồng <br> Số Điện Thoại : 0909 395979</pre>
             <hr>
             <div class="col-md-5">
                 <h3 style="text-align: center;">Thông tin bài giảng</h3><hr>
@@ -61,7 +61,7 @@
                     <input name="email" class="form-control" required="required">
                 </div>
                 <div class="col-md-6">
-                    <strong>Địa chỉ :</strong>
+                    <strong>Chi Nhánh Ngân Hàng :</strong>
                     <input name="diachi" class="form-control" required="required">
                 </div>
                 <div class="col-md-6">
@@ -69,7 +69,7 @@
                     <input name="phone" class="form-control" required="required">
                 </div>
                 <div class="col-md-6">
-                    <strong>CMND :</strong>
+                    <strong>Mã TK Ngân Hàng :</strong>
                     <input name="cmnd" class="form-control" required="required">
                 </div>
                 <div class="col-md-6">

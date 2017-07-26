@@ -57,11 +57,17 @@
                             <td><%=val.Phone%> </td>
                             <td> <%=val.NgayMua.toDateString()%> </td>
                             <td>
-                            <%if(val.TrangThai == 1){%>
-                              <button class="btn btn-success disabled"> <span class="glyphicon glyphicon-ok"></span> </button>
-                            <%} else {%>
-                              <button id="<%=val.idMua%>" class="btn btn-warning ok_1"> <span class="glyphicon glyphicon-remove"></span> </button>
-                              <button class="btn btn-success disabled ok_2"> <span class="glyphicon glyphicon-ok"></span> </button>
+                            <%if(val.TrangThai == 3){%>
+                              <button class="btn btn-success disabled"> <span> Đã thanh toán </span> </button>
+                            <%} if(val.TrangThai == 0) {%>
+                              <button id="<%=val.idMua%>" class="btn btn-success ok_1"> <span class="glyphicon glyphicon-ok"></span> </button>
+                              <button class="btn btn-success disabled ok_2"> <span> Đã thanh toán </span> </button>
+
+                              <button id="<%=val.idMua%>" class="btn btn-warning ok_3"> <span class="glyphicon glyphicon-remove"></span> </button>
+                              <button class="btn btn-danger disabled ok_4"> <span> Bị Hủy </span> </button>
+
+                            <%} if (val.TrangThai == 1) {%>
+                              <button class="btn btn-danger disabled"> <span> Bị Hủy </span> </button>
                             <%}%>
                             </td> 
                           </tr>
@@ -75,19 +81,39 @@
 <% include ../../admin/block/footer %>
 <script>
   $(document).ready(function() {
-    $('.ok_2').hide();
+    $('.ok_2,.ok_4').hide();
 
     $('.ok_1').click(function(event) {
       self = $(this);
       if(confirm("Thanh toán cho khách hàng này ?")){
         $.ajax({
-          url: '/admin/AJAX-sadjshagdsakjgdsadgasdgsakdhsadask/'+$(self).attr('id'),
+          url: '/admin/AJAX-sadjshagdsakjgdsadgasdgsakdhsadask/3/'+$(self).attr('id'),
           type: 'GET',
           dataType: 'html',
         })
         .done(function(data) {
           if(data == "ok"){
             $(self).next().show();
+            $(self).next().next().hide();
+            $(self).next().next().next().hide();
+            $(self).hide();
+          }
+        })
+      }
+    });
+
+    $('.ok_3').click(function(event) {
+      self = $(this);
+      if(confirm("Hủy đơn hàng này ?")){
+        $.ajax({
+          url: '/admin/AJAX-sadjshagdsakjgdsadgasdgsakdhsadask/1/'+$(self).attr('id'),
+          type: 'GET',
+          dataType: 'html',
+        })
+        .done(function(data) {
+          if(data == "ok"){
+            $(self).next().show();
+            $(self).prev().prev().hide();
             $(self).hide();
           }
         })

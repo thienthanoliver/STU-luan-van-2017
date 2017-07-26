@@ -678,10 +678,11 @@ router.get('/thong-ke/khoa-hoc-dang-ky',function(req, res, next){
 	if(tenkhachhang!= 0){
 		query += " AND m.TenKhachHang LIKE "+tenkhachhang;
 	}
-	if(req.query.sapxep == 1){
-		query += " ORDER BY m.idMua DESC ";	
-	}
-	connection.query("SELECT ct.idchitiet, b.TenBaiViet, ct.TrangThai, m.TenKhachHang, m.Phone, ct.NgayMua, m.CMND, ct.idMua FROM baiviet b JOIN chitietmua ct on ct.idBaiViet = b.idBaiViet JOIN mua m ON m.idMua = ct.idMua "+query,function(er,data){
+	query += req.query.sapxep == 2 ? "" : " ORDER BY m.idMua DESC ";
+	connection.query("SELECT ct.idchitiet, b.TenBaiViet, ct.TrangThai, m.TenKhachHang, m.Phone, ct.NgayMua,m.DiaChi, m.CMND, ct.idMua FROM baiviet b JOIN chitietmua ct on ct.idBaiViet = b.idBaiViet JOIN mua m ON m.idMua = ct.idMua "+query,function(er,data){
+		data.forEach(function(val,key){
+			val.NgayMua = dateFormat(val.NgayMua, 'dd-mm-yyyy');
+		})
 		res.render('admin/pages/khoaHocDangKy',{hoten : req.session.adHoTen,idLoaiNV : req.session.idLoaiNV, data : data, idNV : req.session.idNV});
 	});
 });
@@ -707,9 +708,7 @@ router.get('/thong-ke/trac-nghiem-dang-ky',function(req, res, next){
 	if(tenkhachhang!= 0){
 		query += " AND m.TenKhachHang LIKE "+tenkhachhang;
 	}
-	if(req.query.sapxep == 1){
-		query += " ORDER BY m.idMua DESC ";	
-	}
+	query += req.query.sapxep == 2 ? "" : " ORDER BY m.idMua DESC ";	
 	connection.query("SELECT ct.idchitiet,t.TieuDeTN , n.HoTen, m.TenKhachHang, m.Phone, ct.NgayMua, ct.TrangThai, ct.idMua FROM mua m JOIN chitietmua ct ON m.idMua = ct.idMua JOIN tracnghiem t ON t.idTracNghiem = ct.idTracNghiem JOIN nhanvien n ON n.idNV = t.idNV "+query,function(er,data){
 		res.render('admin/pages/tracNghiemDangKy',{hoten : req.session.adHoTen,idLoaiNV : req.session.idLoaiNV, data : data, idNV : req.session.idNV});
 	});
@@ -1082,9 +1081,9 @@ router.post('/doi-mat-khau',function(req,res,next){
 	})
 })
 
-router.get('/AJAX-sadjshagdsakjgdsadgasdgsakdhsadask/:id',function(req,res){
-	connection.query("UPDATE chitietmua SET TrangThai = 1 WHERE idMua = ?",
-		[req.params.id]);
+router.get('/AJAX-sadjshagdsakjgdsadgasdgsakdhsadask/:loai/:id',function(req,res){
+	connection.query("UPDATE chitietmua SET TrangThai = ? WHERE idMua = ?",
+		[req.params.loai,req.params.id]);
 	res.send("ok");
 });
 
