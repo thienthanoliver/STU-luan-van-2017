@@ -315,7 +315,7 @@ router.get('/khoa-hoc',function(req, res, next){
  		query += " AND TenKhoaHoc LIKE '%"+req.query.ten+"%' ";
  		if(req.query.loai != ''){ query +=" AND idLoaiKH = "+req.query.loai; }
  	}
-	connection.query("SELECT kh.* FROM khoahoc kh JOIN thongtingiangvien tt on tt.idKhoaHoc = kh.idKhoaHoc "+query +" GROUP BY kh.idKhoaHoc",function(e,data){
+	connection.query("SELECT kh.* FROM khoahoc kh "+query +" GROUP BY kh.idKhoaHoc",function(e,data){
 		connection.query("SELECT * FROM loaikhoahoc",function(e,loai){
 			res.render('admin/pages/khoaHoc',{hoten : req.session.adHoTen, data : data, loai : loai, idLoaiNV : req.session.idLoaiNV, idNV : req.session.idNV});
 		});
@@ -336,7 +336,7 @@ router.post('/them-khoa-hoc',upload.single('hinh'),function(req, res, next){
 	alias = change_alias(req.body.ten);
 	connection.query("insert into khoahoc values(null,?,?,?,?,?,?) ",
 		[ req.body.loai,req.body.ten,alias, imageName ,req.body.gioithieu,req.body.gia],function(er,val,sa){
-			connection.query("INSERT INTO thongtingiangvien VALUES(null,?,?) ",[req.session.idNV,val.insertId]);
+			// connection.query("INSERT INTO thongtingiangvien VALUES(null,?,?) ",[req.session.idNV,val.insertId]);
 			if(req.body.iddkkh != ''){
 				connection.query("DELETE FROM reason WHERE id="+req.body.iddkkh);
 			}
@@ -365,6 +365,7 @@ router.get("/xoa-khoc-hoc-dang-ki/:id",function(req, res, next){
 router.get('/xoa-khoa-hoc/:id',function(req, res, next){
 	connection.query("DELETE FROM khoahoc WHERE idKhoaHoc = ?",[req.params.id]);
 	connection.query("DELETE FROM thongtingiangvien WHERE idKhoaHoc = ? ",[req.params.id]);
+	connection.query("DELETE FROM baiviet WHERE idKhoaHoc = ? ",[req.params.id]);
 	res.send("ok");
 });
 
