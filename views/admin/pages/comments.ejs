@@ -10,14 +10,8 @@
 <script>
   $( function() {
     $( "#datepicker" ).datepicker({
-        dateFormat: "dd-mm-yy"
+        dateFormat: "yy-mm-dd"
     });
-    date = new Date();
-    $("#datepicker").val(date.toLocaleDateString('de-DE', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-        }).split('.').join('-'));
   });
 
 </script>

@@ -480,7 +480,8 @@ router.get('/nhan-vien',function(req, res, next){
 	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV, idNV : req.session.idNV});
 	}
-	connection.query("SELECT * FROM nhanvien WHERE idLoaiNV = 3 ",function(er,nhanvien){
+	name = req.query.name ? "%"+req.query.name+"%" : "%%";
+	connection.query("SELECT * FROM nhanvien WHERE idLoaiNV = 3 AND (HoTen LIKE ? OR Email LIKE ?) ",[name,name],function(er,nhanvien){
 		res.render('admin/pages/nhanVien',{hoten : req.session.adHoTen, nhanvien : nhanvien, list : "NHÂN VIÊN", idLoaiNV : req.session.idLoaiNV, idNV : req.session.idNV});
 	});
 });
@@ -494,7 +495,8 @@ router.get('/giang-vien',function(req, res, next){
 	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV, idNV : req.session.idNV});
 	}
-	connection.query("SELECT * FROM nhanvien WHERE idLoaiNV = 2 ",function(er,nhanvien){
+	name = req.query.name ? "%"+req.query.name+"%" : "%%";
+	connection.query("SELECT * FROM nhanvien WHERE idLoaiNV = 2 AND (HoTen LIKE ? OR Email LIKE ?) ",[name,name],function(er,nhanvien){
 		res.render('admin/pages/nhanVien',{hoten : req.session.adHoTen, nhanvien : nhanvien, list : "GIẢNG VIÊN", idLoaiNV : req.session.idLoaiNV, idNV : req.session.idNV});
 	});
 });
@@ -508,7 +510,8 @@ router.get('/hoc-vien',function(req, res, next){
 	if(req.session.idLoaiNV != 1 && req.session.idLoaiNV != 3){
 		res.render('admin/block/accessDeny',{hoten : req.session.adHoTen, idLoaiNV : req.session.idLoaiNV, idNV : req.session.idNV});
 	}
-	connection.query('SELECT * FROM user', function(er,hocvien){
+	name = req.query.name ? "%"+req.query.name+"%" : "%%";
+	connection.query('SELECT * FROM user WHERE HoTen LIKE ? OR Email LIKE ?',[name,name], function(er,hocvien){
 		res.render('admin/pages/nhanVien',{hoten : req.session.adHoTen, nhanvien : hocvien, list : "HỌC VIÊN", idLoaiNV : req.session.idLoaiNV, idNV : req.session.idNV});
 	});
 });
@@ -673,7 +676,7 @@ router.get('/thong-ke/khoa-hoc-dang-ky',function(req, res, next){
 		query = " WHERE ct.TrangThai = 0 ";
 	}
 	if(loai == 2){
-		query = " WHERE ct.TrangThai = 1 ";
+		query = " WHERE ct.TrangThai = 3 ";
 	}
 	tenkhachhang = req.query.tenkhachhang ? "'%"+req.query.tenkhachhang+"%'" : 0;
 	if(tenkhachhang!= 0){
@@ -817,8 +820,7 @@ router.get('/comments',function(req,res){
 
 	loai = req.query.loai ? req.query.loai : 1;
 	ten = req.query.ten ? "'%"+req.query.ten+"%'" : "'%%'";
-	Time = req.query.Time ? "'%"+dateFormat(req.query.Time,'yyyy-dd-mm')+"%'" : "'%%'";
-
+	Time = req.query.Time ? "'%"+req.query.Time+"%'" : "'%%'";
 	select = "  bl.id, u.HoTen , bl.NoiDung , bl.Time, bv.TenBaiViet as nameTable ";
 	join = "  baiviet bv ON bv.idBaiViet = bl.idBaiViet  ";
 	where = " WHERE bv.TenBaiViet LIKE "+ten+" AND bl.Time LIKE "+Time+sapxep;
